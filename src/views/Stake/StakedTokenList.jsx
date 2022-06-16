@@ -12,7 +12,7 @@ import "./stake.scss";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getStakedInfo } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
-import { SECONDS_PER_DAY } from "src/context/constants";
+import { CLASS_TYPES, SECONDS_PER_DAY } from "src/context/constants";
 
 function StakedTokenList(props) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
