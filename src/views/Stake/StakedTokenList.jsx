@@ -30,7 +30,7 @@ function StakedTokenList(props) {
   const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
-    let stakedInfo = await getStakedInfo(publicKey);
+    let stakedInfo = await getStakedInfo(publicKey?.toBase58());
     let arr = [];
     for (let i = 0; i < stakedInfo.length; i++) {
       let uri = await getNftMetadataURI(stakedInfo[i].account.nftAddr);
