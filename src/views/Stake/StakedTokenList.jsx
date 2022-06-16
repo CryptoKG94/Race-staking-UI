@@ -12,6 +12,7 @@ import "./stake.scss";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getStakedInfo } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
+import { SECONDS_PER_DAY } from "src/context/constants";
 
 function StakedTokenList(props) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -26,51 +27,6 @@ function StakedTokenList(props) {
   const [remainTimes, setRemainTimes] = useState([]);
   const [vault_items, setVault_items] = useState([]);
 
-  let nftList = [
-    {
-      url: "images/nft/nft_item_1.gif",
-      id: 0,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    },
-    {
-      url: "images/nft/nft_item_2.gif",
-      id: 1,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    },
-    {
-      url: "images/nft/nft_item_3.gif",
-      id: 2,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    },
-    {
-      url: "images/nft/nft_item_4.gif",
-      id: 3,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    },
-    {
-      url: "images/nft/nft_item_5.gif",
-      id: 4,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    },
-    {
-      url: "images/nft/nft_item_6.gif",
-      id: 5,
-      reward: 0,
-      time: 0,
-      poolId: 0
-    }
-  ];
-
   const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
@@ -78,12 +34,20 @@ function StakedTokenList(props) {
     let arr = [];
     for (let i = 0; i < stakedInfo.length; i++) {
       let uri = await getNftMetadataURI(stakedInfo[i].account.nftAddr);
+
+      let currentTimeStamp = new Date().getTime() / 1000;
+      let reward = CLASS_TYPES[stakedInfo[i].account.classId] * (currentTimeStamp - stakedInfo[i].account.lastUpdateTime) / SECONDS_PER_DAY;
+      // console.log("#############################", reward);
+      if (reward < 0) reward = 0;
+
       arr.push({
         id: stakedInfo[i].account.nftAddr.toBase58(),
         uri,
+        reward: reward,
         name: uri.name,
         classId: stakedInfo[i].account.classId,
-        lastUpdateTime: stakedInfo[i].account.lastUpdateTime
+        lastUpdateTime: stakedInfo[i].account.lastUpdateTime,
+        stakeTime: stakedInfo[i].account.stakeTime,
       });
       // console.log("STAKED NAME ^^^^^^^^^^^^^ ", uri.data.name);
     }
@@ -114,7 +78,7 @@ function StakedTokenList(props) {
   const getRemainTime = async () => {
     let _remainTimes = [];
     for (let i = 0; i < stakeInfos.length; i++) {
-      _remainTimes.push(prettyVestingPeriod2(stakeInfos[i].depositTime));
+      _remainTimes.push(prettyVestingPeriod2(stakeInfos[i].stakeTime));
 
     }
 
@@ -166,7 +130,7 @@ function StakedTokenList(props) {
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
               <Typography variant="h6" >
-                NFT ID: {item.id.toString()}
+                NFT ID: {item.name.toString()}
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
@@ -176,7 +140,7 @@ function StakedTokenList(props) {
           </Grid>
 
           <Grid container className="data-grid" alignContent="center">
-            <img src={nftList[item.id % 6].url} className="nft-list-item-image" width={"100%"} />
+            <img src={item.url} className="nft-list-item-image" width={"100%"} />
           </Grid>
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
@@ -186,7 +150,7 @@ function StakedTokenList(props) {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                {item.stakeType + 1}
+                {item.classId + 1}
               </Typography>
             </Grid>
           </Grid>
