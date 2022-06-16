@@ -1,6 +1,6 @@
 export const IDL = {
   "version": "0.1.0",
-  "name": "rs_staking_program",
+  "name": "puffu_staking_program",
   "instructions": [
     {
       "name": "initializeStakingPool",
@@ -47,13 +47,18 @@ export const IDL = {
           "type": {
             "array": [
               "u16",
-              9
+              3
             ]
           }
         },
         {
-          "name": "lockDay",
-          "type": "u32"
+          "name": "lockDayByClass",
+          "type": {
+            "array": [
+              "u16",
+              3
+            ]
+          }
         }
       ]
     },
@@ -357,7 +362,7 @@ export const IDL = {
           "type": {
             "array": [
               "u16",
-              9
+              3
             ]
           }
         },
@@ -457,7 +462,16 @@ export const IDL = {
             "type": {
               "array": [
                 "u16",
-                9
+                3
+              ]
+            }
+          },
+          {
+            "name": "lockDayByClass",
+            "type": {
+              "array": [
+                "u16",
+                3
               ]
             }
           }
@@ -536,6 +550,6 @@ export const IDL = {
     }
   ],
   "metadata": {
-    "address": "6RhXNaW1oQYQmjTc1ypb4bEFe1QasPAgEfFNhQ3HnSqo"
+    "address": "7RdikeoWp1fzYyw6k1tpoULgZEQ33tFnRE3Nf111NBuu"
   }
 }
