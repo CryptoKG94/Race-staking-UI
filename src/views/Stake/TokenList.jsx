@@ -113,13 +113,15 @@ function TokenList() {
     console.log(tokenSelectedList.current);
   }
 
-  const onStake = async action => {
+  const onStake = async () => {
     let tokenList = [];
     tokenSelectedList.current.map((item, index) => {
       if (item.selected) {
-        tokenList.push(item.mint);
+        tokenList.push(item.id.mint);
       }
     })
+
+    console.log('onStake', tokenList, poolID);
 
     await stakeNft(tokenList, Number(poolID));
   };

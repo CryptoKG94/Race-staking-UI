@@ -13,10 +13,10 @@ export const NETWORK = IS_MAINNET ? "mainnet-beta" : "devnet";
 
 export const SECONDS_PER_DAY = 24 * 60 * 60;
 
-export const RS_PREFIX = "rs-nft-staking";
-export const RS_STAKEINFO_SEED = "rs-stake-info";
-export const RS_STAKE_SEED = "rs-nft-staking";
-export const RS_VAULT_SEED = "rs-vault";
+export const RS_PREFIX = "puffu-nft-staking";
+export const RS_STAKEINFO_SEED = "puffu-stake-info";
+export const RS_STAKE_SEED = "puffu-nft-staking";
+export const RS_VAULT_SEED = "puffu-vault";
 
 export const CLASS_TYPES = [10, 20, 50]; // [65, 50, 43, 35, 27, 14, 9, 7, 4];
 export const LOCK_DAY = [0, 10, 23]; // 0 => 10, 10 => 10, 23 => 50

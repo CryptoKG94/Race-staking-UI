@@ -301,6 +301,7 @@ export const sendTransactions = async (
       // let confirming_id = showToast("Confirming Transaction ...", -1, 2);
       let txId = await sendSignedTransaction(connection, signedTxns[0]);
       txIds.push(txId);
+      console.log('txId', txId);
 
       let res = await connection.confirmTransaction(txId, "confirmed");
       // toast.dismiss(confirming_id);
@@ -312,6 +313,7 @@ export const sendTransactions = async (
         // console.log("waiting", i);
         let txId = await sendSignedTransaction(connection, signedTxns[i]);
         txIds.push(txId);
+        console.log('txId', txId);
 
         let res = await connection.confirmTransaction(txId, "confirmed");
         if (res.value.err) {
