@@ -10,18 +10,21 @@ import { prettyVestingPeriod2 } from "../../helpers";
 import "./stake.scss";
 
 import { useWallet } from "@solana/wallet-adapter-react";
+import { getStakedInfo } from "src/context/helper/nft-staking";
+import { getNftMetadataURI } from "src/context/utils";
 
 function StakedTokenList(props) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
 
-  const { connected, wallet } = useWallet();
+  const { connected, wallet, publicKey } = useWallet();
 
   const [tokenChecked, setTokenChecked] = useState([]);
   const tokenSelectedList = useRef([]);
   const [stakeInfos, setStakeInfos] = useState([]);
   const [remainTimes, setRemainTimes] = useState([]);
+  const [vault_items, setVault_items] = useState([]);
 
   let nftList = [
     {
@@ -70,10 +73,27 @@ function StakedTokenList(props) {
 
   const setLoading = props.setLoading;
 
+  const fetchStakedInfo = async () => {
+    let stakedInfo = await getStakedInfo(publicKey);
+    let arr = [];
+    for (let i = 0; i < stakedInfo.length; i++) {
+      let uri = await getNftMetadataURI(stakedInfo[i].account.nftAddr);
+      arr.push({
+        id: stakedInfo[i].account.nftAddr.toBase58(),
+        uri,
+        name: uri.name,
+        classId: stakedInfo[i].account.classId,
+        lastUpdateTime: stakedInfo[i].account.lastUpdateTime
+      });
+      // console.log("STAKED NAME ^^^^^^^^^^^^^ ", uri.data.name);
+    }
+    // setVault_items(arr);
+    setStakeInfos(arr);
+  }
+
   useEffect(() => {
-    async function fetchStakeInfo() {
-      const data = [];
-      setStakeInfos(data);
+    async function getStakeInfo() {
+      await fetchStakedInfo();
     }
 
     fetchStakeInfo();
