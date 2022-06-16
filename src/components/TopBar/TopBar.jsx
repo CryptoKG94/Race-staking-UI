@@ -146,7 +146,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
               background: "#4b3dd0",
               borderRadius: '28px',
               color: 'white'
-            }}/>
+            }} />
           </WalletButton>
 
         </Box>
