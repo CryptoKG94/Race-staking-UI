@@ -33,50 +33,6 @@ function Stake() {
     return state.app.Staked;
   });
 
-  const nftList = [
-    {
-      url: "images/nft/nft_item_1.gif",
-      name: 'Valkyrie M81',
-      rarity: 'Legendary',
-      stakingMultiplier: 'x3',
-      dropChance: '5%'
-    },
-    {
-      url: "images/nft/nft_item_2.gif",
-      name: 'Mauler',
-      rarity: 'Super Rare',
-      stakingMultiplier: 'X2',
-      dropChance: '7%'
-    },
-    {
-      url: "images/nft/nft_item_3.gif",
-      name: 'Cyanide',
-      rarity: 'Rare',
-      stakingMultiplier: 'X1.75',
-      dropChance: '8%'
-    },
-    {
-      url: "images/nft/nft_item_4.gif",
-      name: 'Hussar',
-      rarity: 'Epic',
-      stakingMultiplier: 'X1.5',
-      dropChance: '10%'
-    },
-    {
-      url: "images/nft/nft_item_5.gif",
-      name: 'Mordred',
-      rarity: 'Supreme',
-      stakingMultiplier: 'X1.25',
-      dropChance: '30%'
-    },
-    {
-      url: "images/nft/nft_item_6.gif",
-      name: 'Ardor',
-      rarity: 'Common',
-      stakingMultiplier: 'X1',
-      dropChance: '40%'
-    },
-  ];
   const stakingAPY = useSelector(state => {
     return state.app.stakingAPY
   })
