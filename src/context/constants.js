@@ -18,8 +18,8 @@ export const RS_STAKEINFO_SEED = "rs-stake-info";
 export const RS_STAKE_SEED = "rs-nft-staking";
 export const RS_VAULT_SEED = "rs-vault";
 
-export const CLASS_TYPES = [65, 50, 43, 35, 27, 14, 9, 7, 4];
-export const LOCK_DAY = 20;
+export const CLASS_TYPES = [10, 20, 50]; // [65, 50, 43, 35, 27, 14, 9, 7, 4];
+export const LOCK_DAY = [0, 10, 23]; // 0 => 10, 10 => 10, 23 => 50
 export const TOKEN_DECIMALS = 9;
 
 /** NFT Staking Constant */
@@ -33,13 +33,13 @@ export const SWRD_TOKEN_MINT = new PublicKey(
 export const NFT_CREATOR = new PublicKey(
     IS_MAINNET ? 
     "6rQse6Jq81nBork8x9UwccJJh4qokVVSYujhQRuQgnna" : 
-    "4S2CgocLzwK7RKfNdF6QUYeQW4Pg7uP5TVXrKjx3BqWE"
+    "7etbqNa25YWWQztHrwuyXtG39WnAqPszrGRZmEBPvFup"
 );
 
 export const PROGRAM_ID = new PublicKey(
     IS_MAINNET ? 
     "6RhXNaW1oQYQmjTc1ypb4bEFe1QasPAgEfFNhQ3HnSqo" : 
-    "6RhXNaW1oQYQmjTc1ypb4bEFe1QasPAgEfFNhQ3HnSqo"
+    "7RdikeoWp1fzYyw6k1tpoULgZEQ33tFnRE3Nf111NBuu"
 )
 
 export const INITIALIZER = new PublicKey(

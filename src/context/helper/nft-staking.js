@@ -48,7 +48,7 @@ export const initProject = async () => {
   // console.log("Your transaction signature : ", res);
 }
 
-export const stakeNft = async (selectedNftMint) => {
+export const stakeNft = async (selectedNftMint, poolID) => {
   // console.log("On stake NFT");
   const provider = await getProvider();
   const program = new anchor.Program(IDL, PROGRAM_ID, provider);
@@ -58,8 +58,8 @@ export const stakeNft = async (selectedNftMint) => {
     const nftMintPk = new PublicKey(selectedNftMint[i]);
 
     let uri = await getNftMetadataURI(nftMintPk);
-    let tokenId = await getNftTokenId(uri);
-    let nftClass = getNftClass(tokenId);
+    // let tokenId = await getNftTokenId(uri);
+    let nftClass = poolID;//getNftClass(poolID);
 
     if (nftClass < 0) return;
     // console.log("token URI : ", uri);

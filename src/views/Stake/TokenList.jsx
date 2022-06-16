@@ -13,12 +13,13 @@ import CardHeader from "../../components/CardHeader/CardHeader";
 import { getNftMetadataURI, getAllNftData } from "../../context/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { NFT_CREATOR } from "../../context/constants";
+import { stakeNft } from "../../context/helper/nft-staking";
 import axios from "axios";
 
 import { useTheme } from "@material-ui/core/styles";
 import "./stake.scss";
 
-const collection_creator = NFT_CREATOR; //4S2CgocLzwK7RKfNdF6QUYeQW4Pg7uP5TVXrKjx3BqWE
+const collection_creator = NFT_CREATOR;
 
 function TokenList() {
   const theme = useTheme();
@@ -39,7 +40,6 @@ function TokenList() {
   const [tokenIDList, setTokenIDList] = useState([]);
 
   useEffect(() => {
-    console.log('222222', tokenIDList);
     if (tokenIDList !== null && tokenIDList !== undefined) {
       tokenSelectedList.current = [];
       tokenIDList.map((item, index) => {
@@ -76,26 +76,15 @@ function TokenList() {
         if (item.data.creators) {
           let verifiedCreators = item.data.creators.filter((creator) => creator.verified == 1);
           if (verifiedCreators && verifiedCreators.length > 0) {
-            // if (verifiedCreators[0].address == collection_creator)
-             {
-              console.log('111111111 : ', i, item.data.uri);
-
+            if (verifiedCreators[0].address == collection_creator) {
               let uri = await axios.get(item.data.uri);
-              collection.push(uri);
+              collection.push({mint: item.mint, uri: uri.data});
             }
           }
         }
       }
 
-      console.log('111111111 : ', collection);
-      // let arr = [];
-      // for (let i = 0; i < collection.length; i++) {
-      //   let item = collection[i];
-      //   let uri = await axios.get(item.data.uri);
-      //   // console.log('name2222222222 : ', item.data.uri, uri);
-      //   arr.push({ id: item.mint, uri, name: item.data.name });
-      // }
-
+      console.log('result : ', collection);
       setTokenIDList(collection);
     }
   }
@@ -126,16 +115,13 @@ function TokenList() {
 
   const onStake = async action => {
     let tokenList = [];
-    let poolList = [];
-
     tokenSelectedList.current.map((item, index) => {
       if (item.selected) {
-        tokenList.push(item.id);
-        poolList.push(poolID);
+        tokenList.push(item.mint);
       }
     })
 
-    await dispatch(stake({ tokenList, poolList, provider, address, networkID: chainID }));
+    await stakeNft(tokenList, Number(poolID));
   };
 
 
@@ -164,14 +150,14 @@ function TokenList() {
     );
   }
 
-  const NFTItemView = ({ id, index }) => {
+  const NFTItemView = ({ nft_item, index }) => {
     return (
       <Grid item lg={3}>
         <div className="pool-card">
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
               <Typography variant="h6" >
-                NFT ID: {id}
+                name: {nft_item.uri.name}
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
@@ -181,7 +167,7 @@ function TokenList() {
           </Grid>
 
           <Grid container className="data-grid" alignContent="center">
-            {/* <img src={tokenIDList[id % 6].url} className="nft-list-item-image" width={"100%"} /> */}
+            <img src={nft_item.uri.image} className="nft-list-item-image" width={"100%"} />
           </Grid>
         </div>
       </Grid>
@@ -207,8 +193,8 @@ function TokenList() {
             <Grid container spacing={2} className="data-grid" alignContent="center">
               {
                 (tokenIDList && tokenIDList.length > 0) ?
-                  tokenIDList.map((id, index) => {
-                    return <NFTItemView id={id} index={index} />
+                  tokenIDList.map((item, index) => {
+                    return <NFTItemView nft_item={item} index={index} />
                   })
                   :
                   <div style={{ padding: '15px', fontSize: '30px' }}>No NFT</div>
