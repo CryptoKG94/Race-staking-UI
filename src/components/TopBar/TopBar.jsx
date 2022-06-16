@@ -121,7 +121,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
               </div> */}
             </div>
           </Box>
-          <ConnectMenu theme={theme} />
+          {/* <ConnectMenu theme={theme} /> */}
         </Box>
       </Toolbar>
     </AppBar>
