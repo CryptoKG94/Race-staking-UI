@@ -14,14 +14,14 @@ import {
   PROGRAM_ID,
   SECONDS_PER_DAY,
   LOCK_DAY,
-} from '../../config/constants';
+} from '../constants';
 import {
   getPoolKey,
   getRewardVaultKey,
   getStakedNFTKey,
   getStakeInfoKey,
-} from '../../config/keys';
-import { 
+} from '../keys';
+import {
   getProvider,
   getMultipleTransactions,
   sendMultiTransactions,
@@ -35,7 +35,7 @@ export const initProject = async () => {
   // console.log("On init click");
   const provider = await getProvider();
   const program = new anchor.Program(IDL, PROGRAM_ID, provider);
-  
+
   const res = await program.methods.initializeStakingPool(CLASS_TYPES, LOCK_DAY).accounts({
     admin: provider.wallet.publicKey,
     poolAccount: await getPoolKey(),
@@ -56,11 +56,11 @@ export const stakeNft = async (selectedNftMint) => {
   let instructions = [];
   for (let i = 0; i < selectedNftMint.length; i++) {
     const nftMintPk = new PublicKey(selectedNftMint[i]);
-    
+
     let uri = await getNftMetadataURI(nftMintPk);
     let tokenId = await getNftTokenId(uri);
     let nftClass = getNftClass(tokenId);
-    
+
     if (nftClass < 0) return;
     // console.log("token URI : ", uri);
     // console.log("token Class : ", nftClass);
@@ -90,11 +90,11 @@ export const unstakeNft = async (selectedNftMint) => {
   // console.log("On Unstake NFT");
   const provider = await getProvider();
   const program = new anchor.Program(IDL, PROGRAM_ID, provider);
-  
+
   let instructions = [];
   for (let i = 0; i < selectedNftMint.length; i++) {
     const nftMintPk = new PublicKey(selectedNftMint[i]);
-    
+
     const ix = await program.methods.withdrawNft().accounts({
       owner: provider.wallet.publicKey,
       poolAccount: await getPoolKey(),
@@ -123,11 +123,11 @@ export const claimReward = async (params) => {
   // console.log("On claim reward");
   const provider = await getProvider();
   const program = new anchor.Program(IDL, PROGRAM_ID, provider);
-  
+
   let instructions = [];
   for (let i = 0; i < params.length; i++) {
     const nftMintPk = new PublicKey(params[i].id);
-    
+
     const ix = await program.methods.claimReward()
       .accounts(
         {

@@ -96,7 +96,7 @@ function StakedTokenList(props) {
       await fetchStakedInfo();
     }
 
-    fetchStakeInfo();
+    getStakeInfo();
   }, [connected]);
 
   useEffect(() => {
