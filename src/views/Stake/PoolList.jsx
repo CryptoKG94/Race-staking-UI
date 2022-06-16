@@ -28,42 +28,24 @@ function PoolList() {
   });
 
   let initialPoolList = [
-    // {
-    //   id: 0,
-    //   lockDay: '0 month',
-    //   multiplier: '100',
-    //   totalStaked: 0
-    // },
     {
       id: 0,
       lockDay: '1 month',
-      multiplier: '110',
+      reward: '110',
       totalStaked: 0
     },
     {
       id: 1,
       lockDay: '3 months',
-      multiplier: '130',
+      reward: '130',
       totalStaked: 0
     },
     {
       id: 2,
       lockDay: '6 months',
-      multiplier: '160',
+      reward: '160',
       totalStaked: 0
-    },
-    {
-      id: 3,
-      lockDay: '1 year',
-      multiplier: '200',
-      totalStaked: 0
-    },
-    {
-      id: 4,
-      lockDay: '2 years',
-      multiplier: '600',
-      totalStaked: 0
-    },
+    }
   ];
   const [poolList, setPoolList] = useState(initialPoolList);
 
@@ -75,9 +57,9 @@ function PoolList() {
     if (poolInfos !== null && poolInfos !== undefined) {
       for (let i = 0; i < poolInfos.lockUpPeriods.length; i++) {
         initialPoolList[i].lockDay = poolInfos.lockUpPeriods[i];
-        initialPoolList[i].multiplier = poolInfos.rewardMultipliers[i];
+        initialPoolList[i].reward = poolInfos.rewardMultipliers[i];
         console.log("poolInfos.rewardMultipliers[i]", poolInfos.rewardMultipliers[i]);
-        initialPoolList[i].totalStaked = poolInfos.totalStakeds[i];
+        // initialPoolList[i].totalStaked = poolInfos.totalStakeds[i];
 
       }
       setPoolList(initialPoolList);
@@ -105,7 +87,7 @@ function PoolList() {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container className="data-grid" alignContent="center">
+          {/* <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
                 Total Staked :
@@ -116,7 +98,7 @@ function PoolList() {
                 {item.totalStaked}
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
@@ -137,7 +119,7 @@ function PoolList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                {'x ' + (item.multiplier / 100).toFixed(2)}
+                {'x ' + (item.reward / 100).toFixed(2)}
               </Typography>
             </Grid>
           </Grid>

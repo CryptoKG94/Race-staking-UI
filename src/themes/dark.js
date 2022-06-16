@@ -7,11 +7,11 @@ import commonSettings, { handleBackdropFilter } from "./global.js";
 
 const darkTheme = {
   color: "#FCFCFC",
-  gold: "#F8CC82",
+  gold: "#01e1d9",  //"#F8CC82",
   gray: "#A3A3A3",
   textHighlightColor: "#F4D092",
-  backgroundColor: "#101427",
-  background: "#101427",
+  backgroundColor: "#101922", // "#101427",
+  background: "#101922", //"#101427",
   paperBg: "rgba(255, 255, 255, 0.0)",
   modalBg: "#24242699",
   popoverBg: "rgba(54, 56, 64, 0.99)",
@@ -23,12 +23,12 @@ const darkTheme = {
     "brightness(0) saturate(100%) invert(84%) sepia(49%) saturate(307%) hue-rotate(326deg) brightness(106%) contrast(92%)",
   primaryButtonColor: "#333333",
   primaryButtonBG: "#F4D092",
-  primaryButtonHoverBG: "#EDD8B4",
+  primaryButtonHoverBG: "#7bf7f3", //"#EDD8B4",
   secondaryButtonHoverBG: "rgba(54, 56, 64, 1)",
-  outlinedPrimaryButtonHoverBG: "#F8CC82",
+  outlinedPrimaryButtonHoverBG: "#01e1d9",
   outlinedPrimaryButtonHoverColor: "#333333",
   outlinedSecondaryButtonHoverBG: "transparent",
-  outlinedSecondaryButtonHoverColor: "#F8CC82", //gold
+  outlinedSecondaryButtonHoverColor: "#01e1d9", //gold
   containedSecondaryButtonHoverBG: "rgba(255, 255, 255, 0.15)",
   graphStrokeColor: "rgba(255, 255, 255, .1)",
   gridButtonHoverBackground: "rgba(255, 255, 255, 0.6)",
@@ -68,7 +68,7 @@ export const dark = responsiveFontSizes(
       overrides: {
         MuiToolbar: {
           root: {
-            justifyContent: "center !important" ,
+            justifyContent: "center !important",
           }
 
         },
@@ -88,7 +88,7 @@ export const dark = responsiveFontSizes(
         },
         MuiSelect: {
           select: {
-            color: "#F8CC82",
+            color: "#01e1d9",
           },
         },
         MuiPaper: {
@@ -261,7 +261,7 @@ export const dark = responsiveFontSizes(
             },
             "&:active": {
               color: darkTheme.gold,
-              borderBottom: "#F8CC82",
+              borderBottom: "#01e1d9",
             },
           },
           textSecondary: {
@@ -304,6 +304,20 @@ export const dark = responsiveFontSizes(
             },
           },
         },
+        MuiRadio: {
+          colorSecondary: {
+            // color: darkTheme.gold,
+            "&$checked": {
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#ffffff0a",
+              }
+            },
+            "&:hover": {
+              backgroundColor: "#ffffff0a",
+            }
+          }
+        }
       },
     },
     commonSettings,

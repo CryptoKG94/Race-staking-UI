@@ -4,6 +4,7 @@
     -ms-overflow-style: none !important;
     /* IE and Edge */
     scrollbar-width: none !important;
+
     /* Firefox */
     &::-webkit-scrollbar {
         display: none !important;
@@ -20,18 +21,19 @@ body,
     // @media(max-wdith: 1000px) {
     //     overflow: auto;
     // }
-    background-image: url('./assets/images/background.webp');
+    // background-image: url('./assets/images/background.webp');
     background-repeat: no-repeat;
-    background-attachment: fixed;  
+    background-attachment: fixed;
     background-size: cover;
     width: 100vw;
     height: 100vh;
+    background-image: radial-gradient(600px 600px ellipse at 100% 0, #0a696d, #10353d, #101922, transparent),
+        radial-gradient(600px 600px ellipse at 0 100%, #0a696d, #10353d, #101922);
 }
 
 body {
     margin: 0;
     box-sizing: border-box;
-
 }
 
 .app {
@@ -53,33 +55,41 @@ body {
 .MuiDrawer-paperAnchorDockedLeft {
     border-right: 0 !important;
 }
+
 .MuiToolbar-root {
     justify-content: center !important;
 }
+
 .ohm-card {
     max-width: 833px;
+
     .card-header {
         width: 100%;
         min-height: 33px;
         margin-bottom: 10px;
+
         h5 {
             font-weight: 600 !important;
         }
     }
+
     .help-text {
         margin: 10px 0px;
     }
+
     .data-row {
         display: flex;
         justify-content: space-between;
         flex-direction: row;
         margin: 12px 0px;
     }
+
     .data-row-centered {
         display: flex;
         justify-content: center;
         flex-flow: row wrap;
         margin: 12px 0px;
+
         .marginedBtn {
             margin: 0.3rem;
         }
@@ -103,6 +113,7 @@ input[type="number"] {
 a:hover svg {
     color: inherit;
 }
+
 .MuiLink-root.active {
     color: #ffe300 !important;
     text-decoration: underline;

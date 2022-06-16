@@ -135,8 +135,6 @@ function TokenList() {
           <FormControlLabel value="0" control={<Radio />} label="Pool 1" />
           <FormControlLabel value="1" control={<Radio />} label="Pool 2" />
           <FormControlLabel value="2" control={<Radio />} label="Pool 3" />
-          <FormControlLabel value="3" control={<Radio />} label="Pool 4" />
-          <FormControlLabel value="4" control={<Radio />} label="Pool 5" />
           {/* <FormControlLabel value="5" control={<Radio />} label="Pool 6" /> */}
 
         </RadioGroup>
@@ -155,8 +153,8 @@ function TokenList() {
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
-              <Checkbox style={{ marginTop: '-10px' }} 
-              checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
+              <Checkbox style={{ marginTop: '-10px' }}
+                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
             </Grid>
           </Grid>
 
@@ -180,6 +178,9 @@ function TokenList() {
           <Box display="flex">
             <CardHeader title="My NFT List" />
           </Box>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <RowRadioButtonsGroup />
+          </div>
           <div className="token-list-container">
             <Grid container spacing={2} className="data-grid" alignContent="center">
               {
@@ -188,19 +189,15 @@ function TokenList() {
                     return <NFTItemView id={id} index={index} />
                   })
                   :
-                  <div style={{padding: '15px', fontSize: '30px'}}>No NFT</div>
+                  <div style={{ padding: '15px', fontSize: '30px' }}>No NFT</div>
 
               }
             </Grid>
-            <Grid container spacing={2} className="data-grid" style = {{padding: '10px'}} alignContent="center">
-              <div>
-                <RowRadioButtonsGroup />
-
-              </div>
-              <Grid item lg={2} md={2} sm={2} xs={2} className="stake-button">
+            <Grid container spacing={2} className="data-grid" style={{ padding: '10px' }} alignContent="center">
+              <Grid item className="stake-button">
                 <div className="stake-button-container">
                   <Button
-                    className="stake-button"
+                    // className="stake-button"
                     variant="contained"
                     color="primary"
                     onClick={() => {

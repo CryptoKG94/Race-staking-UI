@@ -9,8 +9,11 @@
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto;
-  -ms-overflow-style: none !important; /* IE and Edge */
-  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;
+  /* IE and Edge */
+  scrollbar-width: none !important;
+
+  /* Firefox */
   &::-webkit-scrollbar {
     display: none !important;
   }
@@ -18,34 +21,41 @@
   .ohm-card {
     max-width: unset !important;
     width: 100%;
-    background-color: #000a !important;
+    background-color: #0004 !important;
     margin: 20px;
     padding: 20px;
+
     .card-header {
       margin-bottom: 1rem;
     }
+
     &.ohm-chart-card {
       .chart-card-header {
         padding: 0px 20px !important;
         min-width: 300px;
       }
+
       height: 355px;
     }
   }
+
   .hero-metrics {
     width: 100%;
     margin-bottom: 23px;
     text-align: center;
+
     .ohm-card {
       max-width: unset !important;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-evenly;
+
       h5 {
         font-weight: bold;
       }
     }
   }
+
   .data-grid {
     overflow: hidden;
     display: flex;
@@ -83,6 +93,7 @@
     .button-group {
       margin-top: 60px;
       color: yellow;
+
       .left-button {
         padding: 0px;
         padding-left: 20px;
@@ -99,6 +110,7 @@
 
     .nft-item-description-title {
       padding-left: 105px;
+
       @media (max-width: 1100px) {
         padding-left: 70px;
       }
@@ -106,6 +118,7 @@
 
     .nft-item-description-value {
       padding-right: 105px;
+
       @media (max-width: 1100px) {
         padding-right: 70px;
       }
@@ -126,6 +139,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
       @media (max-width: 1100px) {
         width: 310px;
       }
@@ -174,6 +188,7 @@
         display: flex;
         justify-content: center;
       }
+
       .pool-button {
         width: 80%;
         padding: 3px;
@@ -195,6 +210,7 @@
         display: flex;
         justify-content: center;
       }
+
       .stake-button {
         width: 40%;
         padding: 10px;
@@ -204,19 +220,21 @@
     }
   }
 
-  
+
 }
 
 .smaller {
   .ohm-card {
     width: 97%;
   }
+
   .hero-metrics .ohm-card {
-    > .MuiBox-root {
+    >.MuiBox-root {
       flex-direction: column;
       align-items: flex-start;
       flex-wrap: wrap;
     }
+
     div.metric {
       text-align: left !important;
     }
@@ -229,6 +247,7 @@
     min-width: 30% !important;
     max-width: 60%;
     text-align: left !important;
+
     &.market,
     &.price,
     &.wsoprice,
@@ -243,7 +262,7 @@
 
 .very-small {
   .hero-metrics .ohm-card {
-    > .MuiBox-root {
+    >.MuiBox-root {
       flex-direction: column;
       justify-content: center;
     }

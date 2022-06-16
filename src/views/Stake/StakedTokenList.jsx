@@ -88,7 +88,7 @@ function StakedTokenList() {
     return state.account.stakeInfos;
   })
 
-   useEffect(() => {
+  useEffect(() => {
     if (stakeInfos !== null && stakeInfos !== undefined) {
       tokenSelectedList.current = [];
       stakeInfos.map((item) => {
@@ -102,9 +102,9 @@ function StakedTokenList() {
 
   const getRemainTime = async () => {
     let _remainTimes = [];
-    for(let i = 0; i < stakeInfos.length; i++) {
+    for (let i = 0; i < stakeInfos.length; i++) {
       _remainTimes.push(prettyVestingPeriod2(stakeInfos[i].depositTime));
-      
+
     }
 
     console.log("_remainTimes :", _remainTimes);
@@ -119,7 +119,7 @@ function StakedTokenList() {
     console.log(tokenSelectedList.current);
   }
 
-  
+
 
   const onUnStake = async action => {
     let tokenList = [];
@@ -159,8 +159,8 @@ function StakedTokenList() {
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
-              <Checkbox style={{ marginTop: '-10px' }} 
-              checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
+              <Checkbox style={{ marginTop: '-10px' }}
+                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
             </Grid>
           </Grid>
 
@@ -175,7 +175,7 @@ function StakedTokenList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                { item.stakeType + 1 }
+                {item.stakeType + 1}
               </Typography>
             </Grid>
           </Grid>
@@ -187,7 +187,7 @@ function StakedTokenList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                { item.reward }
+                {item.reward}
               </Typography>
             </Grid>
           </Grid>
@@ -200,7 +200,7 @@ function StakedTokenList() {
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
                 {/* { (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime) } */}
-                { remainTimes[index] }
+                {remainTimes[index]}
               </Typography>
             </Grid>
           </Grid>
@@ -212,15 +212,15 @@ function StakedTokenList() {
   // export default function DraggableDialog() {
   // const DraggableDialog = () => {
   //   const [open, setOpen] = React.useState(false);
-  
+
   //   const handleClickOpen = () => {
   //     setOpen(true);
   //   };
-  
+
   //   const handleClose = () => {
   //     setOpen(false);
   //   };
-  
+
   //   return (
   //     <div>
   //       <Button variant="outlined" onClick={handleClickOpen}>
@@ -253,42 +253,42 @@ function StakedTokenList() {
   // }
 
   return (
-      <Container
-        style={{
-          paddingLeft: smallerScreen || verySmallScreen ? "0" : "2.3rem",
-          paddingRight: smallerScreen || verySmallScreen ? "0" : "2.3rem",
-        }}
-      >
-        <Zoom in={true}>
-          <Paper className="ohm-card">
-            <Box display="flex">
-              <CardHeader title="Staked NFT List" />
-            </Box>
-            <div className="pool-card-container">
-              <Grid container spacing={2} className="data-grid" alignContent="center">
-                {
-                  (stakeInfos && stakeInfos.length > 0) ?
-                    stakeInfos.map( (item, index) => {
-                      return <NFTItemView item = {item} index = {index} />
-                    })
-                    :
-                    <div style={{padding: '15px', fontSize: '30px'}}>No NFT</div>
+    <Container
+      style={{
+        paddingLeft: smallerScreen || verySmallScreen ? "0" : "2.3rem",
+        paddingRight: smallerScreen || verySmallScreen ? "0" : "2.3rem",
+      }}
+    >
+      <Zoom in={true}>
+        <Paper className="ohm-card">
+          <Box display="flex">
+            <CardHeader title="Staked NFT List" />
+          </Box>
+          <div className="pool-card-container">
+            <Grid container spacing={2} className="data-grid" alignContent="center">
+              {
+                (stakeInfos && stakeInfos.length > 0) ?
+                  stakeInfos.map((item, index) => {
+                    return <NFTItemView item={item} index={index} />
+                  })
+                  :
+                  <div style={{ padding: '15px', fontSize: '30px' }}>No NFT</div>
 
-                }
-              </Grid>
-              <Grid container spacing={2} className="data-grid" alignContent="center">
-                <Grid item lg={12} md={12} sm={12} xs={12} className="pool-button-container">
-                  <Button
-                    className="pool-button"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      onUnStake();
-                    }}
-                  >
-                    Claim & Unstake
-                  </Button>
-                  {/* <Button
+              }
+            </Grid>
+            <Grid container spacing={2} className="data-grid" alignContent="center">
+              <Grid item className="pool-button-container">
+                <Button
+                  className="pool-button"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    onUnStake();
+                  }}
+                >
+                  Claim & Unstake
+                </Button>
+                {/* <Button
                     className="pool-button"
                     variant="contained"
                     color="primary"
@@ -299,14 +299,14 @@ function StakedTokenList() {
                   >
                     Emergency Withdrawal
                   </Button> */}
-                </Grid>
               </Grid>
-            </div>
+            </Grid>
+          </div>
 
-          </Paper>
-        </Zoom>
+        </Paper>
+      </Zoom>
 
-      </Container >
+    </Container >
   );
 }
 
