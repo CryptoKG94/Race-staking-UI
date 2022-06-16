@@ -29,7 +29,10 @@ import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
 
 import "./style.scss";
-import Calculator from "./views/Calculator/Calculator";
+
+import { Wallets } from './components/wallet'
+
+import { SnackbarProvider } from 'notistack';
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -194,24 +197,29 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
 
-        {/* {isAppLoading && <LoadingSplash />} */}
-        <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
-          <Messages />
-          {path === "/" ? null : (
-            <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
-          )}
-          <div >
-            <Switch>
-              <Route exact path="/">
-                <Redirect to="stake" />
-              </Route>
-              <Route path="/stake">
-                <Stake />
-              </Route>
-              <Route component={NotFound} />
-            </Switch>
-          </div>
-        </div>
+
+        <SnackbarProvider>
+          <Wallets>
+            {/* {isAppLoading && <LoadingSplash />} */}
+            <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
+              <Messages />
+              {path === "/" ? null : (
+                <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
+              )}
+              <div >
+                <Switch>
+                  <Route exact path="/">
+                    <Redirect to="stake" />
+                  </Route>
+                  <Route path="/stake">
+                    <Stake />
+                  </Route>
+                  <Route component={NotFound} />
+                </Switch>
+              </div>
+            </div>
+          </Wallets>
+        </SnackbarProvider>
       </ThemeProvider>
     </Router>
   );
