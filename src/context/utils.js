@@ -16,7 +16,7 @@ import {
 } from "@nfteyez/sol-rayz";
 import axios from "axios";
 
-import { NETWORK } from '../config/constants';
+import { NETWORK } from './constants';
 
 const opts = {
   preflightCommitment: "processed"

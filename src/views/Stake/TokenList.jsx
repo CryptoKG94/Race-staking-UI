@@ -10,19 +10,22 @@ import { trim, formatCurrency } from "../../helpers";
 import { stake } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
 
+import { getNftMetadataURI, getAllNftData } from "../../context/utils";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { NFT_CREATOR } from "../../context/constants";
+import axios from "axios";
+
 import { useTheme } from "@material-ui/core/styles";
 import "./stake.scss";
 
+const collection_creator = NFT_CREATOR; //4S2CgocLzwK7RKfNdF6QUYeQW4Pg7uP5TVXrKjx3BqWE
+
 function TokenList() {
-  const [data, setData] = useState(null);
-  const [apy, setApy] = useState(null);
-  const [runway, setRunway] = useState(null);
-  // const [staked, setStaked] = useState(null);
   const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
-  const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
+  // const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
   const staked = useSelector(state => {
     return state.app.Staked;
   });
@@ -30,59 +33,13 @@ function TokenList() {
   const [poolID, setPoolID] = useState('0');
   const [tokenChecked, setTokenChecked] = useState([]);
   const tokenSelectedList = useRef([]);
+  const [fetchFlag, setFetchFlag] = useState(true);
+  const wallet = useWallet();
 
-  const nftList = [
-    {
-      url: "images/nft/nft_item_1.gif",
-      name: 'Valkyrie M81',
-      rarity: 'Legendary',
-      stakingMultiplier: 'x3',
-      dropChance: '5%'
-    },
-    {
-      url: "images/nft/nft_item_2.gif",
-      name: 'Mauler',
-      rarity: 'Super Rare',
-      stakingMultiplier: 'X2',
-      dropChance: '7%'
-    },
-    {
-      url: "images/nft/nft_item_3.gif",
-      name: 'Cyanide',
-      rarity: 'Rare',
-      stakingMultiplier: 'X1.75',
-      dropChance: '8%'
-    },
-    {
-      url: "images/nft/nft_item_4.gif",
-      name: 'Hussar',
-      rarity: 'Epic',
-      stakingMultiplier: 'X1.5',
-      dropChance: '10%'
-    },
-    {
-      url: "images/nft/nft_item_5.gif",
-      name: 'Mordred',
-      rarity: 'Supreme',
-      stakingMultiplier: 'X1.25',
-      dropChance: '30%'
-    },
-    {
-      url: "images/nft/nft_item_6.gif",
-      name: 'Ardor',
-      rarity: 'Common',
-      stakingMultiplier: 'X1',
-      dropChance: '40%'
-    },
-  ];
-
-  const tokenIDList = useSelector(state => {
-    return state.account.nft && state.account.nft.tokenIDList;
-  })
-
-  console.log("tokenIDList", tokenIDList);
+  const [tokenIDList, setTokenIDList] = useState([]);
 
   useEffect(() => {
+    console.log('222222', tokenIDList);
     if (tokenIDList !== null && tokenIDList !== undefined) {
       tokenSelectedList.current = [];
       tokenIDList.map((item, index) => {
@@ -93,6 +50,71 @@ function TokenList() {
       setTokenChecked(tokenChecked);
     }
   }, [tokenIDList]);
+
+  useEffect(() => {
+    async function fetchAll() {
+      // console.log("Fetching...............")
+      if (fetchFlag && wallet && wallet.publicKey) {
+        // console.log('fetchFlag:  TRUE')
+        await fetchUnstakedInfo()
+        setFetchFlag(false)
+      }
+    }
+
+    fetchAll();
+  }, [fetchFlag, wallet])
+
+  const fetchUnstakedInfo = async () => {
+    let data = await getNftTokenData();
+    if (data) {
+      // let collection = data.filter((item) => item.data.creators &&
+      //  (item.data.creators.filter((creator) => creator.verified == 1))[0].address == collection_creator);
+
+      let collection = [];
+      for (let i = 0; i < data.length; i++) {
+        let item = data[i];
+        if (item.data.creators) {
+          let verifiedCreators = item.data.creators.filter((creator) => creator.verified == 1);
+          if (verifiedCreators && verifiedCreators.length > 0) {
+            // if (verifiedCreators[0].address == collection_creator)
+             {
+              console.log('111111111 : ', i, item.data.uri);
+
+              let uri = await axios.get(item.data.uri);
+              collection.push(uri);
+            }
+          }
+        }
+      }
+
+      console.log('111111111 : ', collection);
+      // let arr = [];
+      // for (let i = 0; i < collection.length; i++) {
+      //   let item = collection[i];
+      //   let uri = await axios.get(item.data.uri);
+      //   // console.log('name2222222222 : ', item.data.uri, uri);
+      //   arr.push({ id: item.mint, uri, name: item.data.name });
+      // }
+
+      setTokenIDList(collection);
+    }
+  }
+
+  const getNftTokenData = async () => {
+    try {
+      let nftData = await getAllNftData();
+      var data = Object.keys(nftData).map((key) => nftData[key]); let arr = [];
+      let n = data.length;
+      for (let i = 0; i < n; i++) {
+        // // console.log(data[i].data.uri);
+        arr.push(data[i]);
+      }
+      // console.log(`arr`)
+      return arr;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   const onTokenSeltected = (event, id) => {
@@ -159,7 +181,7 @@ function TokenList() {
           </Grid>
 
           <Grid container className="data-grid" alignContent="center">
-            <img src={nftList[id % 6].url} className="nft-list-item-image" width={"100%"} />
+            {/* <img src={tokenIDList[id % 6].url} className="nft-list-item-image" width={"100%"} /> */}
           </Grid>
         </div>
       </Grid>
