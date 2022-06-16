@@ -85,6 +85,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
   return (
     <AppBar position="static" className={classes.appBar} elevation={0}>
       <Toolbar disableGutters className="dapp-topbar">
+        <div style={{width:"200px"}}></div>
         <Box display="flex">
           {/* <Logo theme={theme} /> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
@@ -138,18 +139,19 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
           </Box>
           {/* <ConnectMenu theme={theme} /> */}
 
-          <WalletButton>
-            <MaterialUIWalletMultiButton variant="text" style={{
-              // border: "5px solid black",
-              width: "240px",
-              fontWeight: 900,
-              background: "#4b3dd0",
-              borderRadius: '28px',
-              color: 'white'
-            }}/>
-          </WalletButton>
-
         </Box>
+        <WalletButton>
+          <MaterialUIWalletMultiButton variant="text" style={{
+            // border: "5px solid black",
+            height: "64px",
+            maxHeight: "64px!important",
+            width: "200px",
+            fontWeight: 900,
+            background: "#4b3dd0",
+            borderRadius: '28px',
+            color: 'white'
+          }} />
+        </WalletButton>
       </Toolbar>
     </AppBar>
   );
