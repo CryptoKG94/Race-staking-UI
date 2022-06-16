@@ -1,42 +1,26 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useWeb3Context } from "../../hooks";
 import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button, Checkbox } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
-import { useSelector } from "react-redux";
-import { trim, formatCurrency } from "../../helpers";
+
 import { unstake, emergencyWithdrawal } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
-import { prettifySeconds, prettyVestingPeriod2 } from "../../helpers";
+import { prettyVestingPeriod2 } from "../../helpers";
 
-import { useTheme } from "@material-ui/core/styles";
 import "./stake.scss";
 
+import { useWallet } from "@solana/wallet-adapter-react";
 
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-
-function StakedTokenList() {
-  const [data, setData] = useState(null);
-  const [apy, setApy] = useState(null);
-  const [runway, setRunway] = useState(null);
-  // const [staked, setStaked] = useState(null);
-  const theme = useTheme();
+function StakedTokenList(props) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
-  const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
-  const staked = useSelector(state => {
-    return state.app.Staked;
-  });
+
+  const { connected, wallet } = useWallet();
 
   const [tokenChecked, setTokenChecked] = useState([]);
   const tokenSelectedList = useRef([]);
-  const [stakedInfoList, setStakedInfoList] = useState([]);
+  const [stakeInfos, setStakeInfos] = useState([]);
   const [remainTimes, setRemainTimes] = useState([]);
 
   let nftList = [
@@ -84,9 +68,16 @@ function StakedTokenList() {
     }
   ];
 
-  const stakeInfos = useSelector(state => {
-    return state.account.stakeInfos;
-  })
+  const setLoading = props.setLoading;
+
+  useEffect(() => {
+    async function fetchStakeInfo() {
+      const data = [];
+      setStakeInfos(data);
+    }
+
+    fetchStakeInfo();
+  }, [connected]);
 
   useEffect(() => {
     if (stakeInfos !== null && stakeInfos !== undefined) {
@@ -209,49 +200,6 @@ function StakedTokenList() {
     )
   }
 
-  // export default function DraggableDialog() {
-  // const DraggableDialog = () => {
-  //   const [open, setOpen] = React.useState(false);
-
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
-  //   return (
-  //     <div>
-  //       <Button variant="outlined" onClick={handleClickOpen}>
-  //         Open draggable dialog
-  //       </Button>
-  //       <Dialog
-  //         open={open}
-  //         onClose={handleClose}
-  //         PaperComponent={PaperComponent}
-  //         aria-labelledby="draggable-dialog-title"
-  //       >
-  //         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-  //           Subscribe
-  //         </DialogTitle>
-  //         <DialogContent>
-  //           <DialogContentText>
-  //             To subscribe to this website, please enter your email address here. We
-  //             will send updates occasionally.
-  //           </DialogContentText>
-  //         </DialogContent>
-  //         <DialogActions>
-  //           <Button autoFocus onClick={handleClose}>
-  //             Cancel
-  //           </Button>
-  //           <Button onClick={handleClose}>Subscribe</Button>
-  //         </DialogActions>
-  //       </Dialog>
-  //     </div>
-  //   );
-  // }
-
   return (
     <Container
       style={{
@@ -312,8 +260,8 @@ function StakedTokenList() {
 
 const queryClient = new QueryClient();
 
-export default () => (
+export default (props) => (
   <QueryClientProvider client={queryClient}>
-    <StakedTokenList />
+    <StakedTokenList props />
   </QueryClientProvider>
 );

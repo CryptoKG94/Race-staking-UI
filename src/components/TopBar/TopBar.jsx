@@ -85,7 +85,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
   return (
     <AppBar position="static" className={classes.appBar} elevation={0}>
       <Toolbar disableGutters className="dapp-topbar">
-        <div style={{width:"200px"}}></div>
+        <div style={{ width: "200px" }}></div>
         <Box display="flex">
           {/* <Logo theme={theme} /> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
