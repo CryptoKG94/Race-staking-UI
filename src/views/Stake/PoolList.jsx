@@ -6,7 +6,6 @@ import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button } 
 import { Skeleton } from "@material-ui/lab";
 import { useSelector } from "react-redux";
 import { trim, formatCurrency } from "../../helpers";
-import { mintNFTWithBNB } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
 import { prettifySeconds } from "../../helpers";
 
@@ -79,20 +78,15 @@ function PoolList() {
         initialPoolList[i].multiplier = poolInfos.rewardMultipliers[i];
         console.log("poolInfos.rewardMultipliers[i]", poolInfos.rewardMultipliers[i]);
         initialPoolList[i].totalStaked = poolInfos.totalStakeds[i];
-        
+
       }
       setPoolList(initialPoolList);
     }
-  }, [ poolInfos]);
+  }, [poolInfos]);
 
   // const tokenIDList = useSelector(state => {
   //   return state.account.nft && state.account.nft.tokenIDList;
   // })
-
-
-  const onMintwithBNB = async action => {
-    await dispatch(mintNFTWithBNB({ provider, address, networkID: chainID }));
-  };
 
   const PoolItemView = ({ item }) => {
     console.log("PoolItemView", item);
@@ -119,7 +113,7 @@ function PoolList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                { item.totalStaked }
+                {item.totalStaked}
               </Typography>
             </Grid>
           </Grid>
@@ -131,8 +125,8 @@ function PoolList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                { (item.lockDay) ? initialPoolList[item.id].lockDay : prettifySeconds(item.lockDay) }
-              </Typography> 
+                {(item.lockDay) ? initialPoolList[item.id].lockDay : prettifySeconds(item.lockDay)}
+              </Typography>
             </Grid>
           </Grid>
           <Grid container className="data-grid" alignContent="center">
@@ -143,7 +137,7 @@ function PoolList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                {'x ' + (item.multiplier/100).toFixed(2)}
+                {'x ' + (item.multiplier / 100).toFixed(2)}
               </Typography>
             </Grid>
           </Grid>
@@ -153,35 +147,35 @@ function PoolList() {
   }
 
   return (
-      <Container
-        style={{
-          paddingLeft: smallerScreen || verySmallScreen ? "0" : "2.3rem",
-          paddingRight: smallerScreen || verySmallScreen ? "0" : "2.3rem",
-        }}
-      >
-        <Zoom in={true}>
-          <Paper className="ohm-card">
-            <Box display="flex">
-              <CardHeader title="Pool Info" />
-            </Box>
-            <div className="pool-card-container">
-              <Grid container spacing={2} className="data-grid" alignContent="center">
-                {
-                  (poolList && poolList.length > 0) ?
-                    poolList.map(item => {
-                      return <PoolItemView item={item} />
-                    })
-                    :
-                    <div>No pools</div>
+    <Container
+      style={{
+        paddingLeft: smallerScreen || verySmallScreen ? "0" : "2.3rem",
+        paddingRight: smallerScreen || verySmallScreen ? "0" : "2.3rem",
+      }}
+    >
+      <Zoom in={true}>
+        <Paper className="ohm-card">
+          <Box display="flex">
+            <CardHeader title="Pool Info" />
+          </Box>
+          <div className="pool-card-container">
+            <Grid container spacing={2} className="data-grid" alignContent="center">
+              {
+                (poolList && poolList.length > 0) ?
+                  poolList.map(item => {
+                    return <PoolItemView item={item} />
+                  })
+                  :
+                  <div>No pools</div>
 
-                }
-              </Grid>
-            </div>
+              }
+            </Grid>
+          </div>
 
-          </Paper>
-        </Zoom>
+        </Paper>
+      </Zoom>
 
-      </Container >
+    </Container >
   );
 }
 
