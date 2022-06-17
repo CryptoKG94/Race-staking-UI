@@ -92,10 +92,10 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     try {
       let res = await claimReward(stakeInfos);
       if (res.result == "success") {
-        NotificationManager.success('Unstaking Successfully');
+        NotificationManager.success('Claimed Successfully');
         // dispatch(info("Unstaking Successfully!"));
       } else {
-        NotificationManager.error('Unstaking Failed!');
+        NotificationManager.error('Claim Failed!');
         // dispatch(error("Unstaking Failed!"));
       }
     } catch (e) {
@@ -117,7 +117,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     try {
       let res = await unstakeNft(tokenList);
       if (res.result == "success") {
-        NotificationManager.success('Unstaking Successfully');
+        NotificationManager.success('Unstaked Successfully');
       } else {
         NotificationManager.error('Unstaking Failed!');
       }
@@ -199,16 +199,16 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
             </Grid>
           </Grid>
           <Grid container className="data-grid" alignContent="center">
-            <Grid item lg={3} md={4} sm={4} xs={4}>
-              <Typography variant="h6" className="nft-item-description-title" align={'left'}>
-                Remain:
-              </Typography>
-            </Grid>
-            <Grid item lg={9} md={8} sm={8} xs={8}>
-              <Typography variant="h6" className="nft-item-description-value" align={'right'}>
+            <Grid item lg={12} md={8} sm={8} xs={8}>
+              <Typography variant="h6" className="nft-item-description-value" align={'center'}>
                 {/* { (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime) } */}
                 {/* {remainTimes[index]} */}
                 <UnstakeTimer unstakeTime={unstakeTime} />
+              </Typography>
+            </Grid>
+            <Grid item lg={12} md={4} sm={4} xs={4}>
+              <Typography variant="h6" className="nft-item-description-title" align={'center'}>
+                (Remain Lock Time)
               </Typography>
             </Grid>
           </Grid>
