@@ -181,7 +181,7 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
               <Typography variant="h6" >
-                name: {nft_item.uri.name}
+                {nft_item.uri.name}
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
