@@ -89,6 +89,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   }
 
   const onClaim = async () => {
+    setLoadingStatus(true);
+
     try {
       let res = await claimReward(stakeInfos);
       if (res.result == "success") {
@@ -103,6 +105,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       console.log(e);
       NotificationManager.error(e.message);
     }
+    setLoadingStatus(false);
   }
 
   const onUnStake = async action => {
@@ -115,8 +118,12 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       }
     })
 
+    if (tokenList.length < 0) return;
+
     try {
+      setLoadingStatus(true);
       let res = await unstakeNft(tokenList);
+      setLoadingStatus(false);
       if (res.result == "success") {
         NotificationManager.success('Unstaked Successfully');
       } else {
@@ -126,6 +133,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     } catch (e) {
       console.log("[] => unstaking error: ", e);
       NotificationManager.error(e.message);
+      setLoadingStatus(false);
     }
 
     // setLoading(false);
