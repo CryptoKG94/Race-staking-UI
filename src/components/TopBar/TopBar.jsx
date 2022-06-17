@@ -14,11 +14,7 @@ import Logo from "./Logo.jsx"
 import MenuBar from "./Menubar.jsx";
 import { styled } from "@mui/system";
 
-import {
-  WalletDialogProvider as MaterialUIWalletDialogProvider,
-  WalletMultiButton as MaterialUIWalletMultiButton,
-  WalletConnectButton
-} from '@solana/wallet-adapter-material-ui';
+import { WalletConnect } from "../wallet";
 
 import "./topbar.scss";
 const useStyles = makeStyles(theme => ({
@@ -60,12 +56,6 @@ const useStyles = makeStyles(theme => ({
 
   },
 }));
-
-
-const WalletButton = styled("div")(() => ({
-  display: 'flex',
-  flexDirection: 'row-reverse'
-}))
 
 
 function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
@@ -140,18 +130,8 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
           {/* <ConnectMenu theme={theme} /> */}
 
         </Box>
-        <WalletButton>
-          <MaterialUIWalletMultiButton variant="text" style={{
-            // border: "5px solid black",
-            height: "64px",
-            maxHeight: "64px!important",
-            width: "200px",
-            fontWeight: 900,
-            background: "#4b3dd0",
-            borderRadius: '28px',
-            color: 'white'
-          }} />
-        </WalletButton>
+        <WalletConnect />
+
       </Toolbar>
     </AppBar>
   );

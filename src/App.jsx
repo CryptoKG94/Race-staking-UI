@@ -16,15 +16,27 @@ import TopBar from "./components/TopBar/TopBar.jsx";
 import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
 
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { getPhantomWallet } from "@solana/wallet-adapter-wallets";
+import {
+  WalletModalProvider,
+  WalletDisconnectButton,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+import { clusterApiUrl } from "@solana/web3.js";
+import "@solana/wallet-adapter-react-ui/styles.css";
+
+
 import { dark as darkTheme } from "./themes/dark.js";
 import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
 
 import "./style.scss";
 
-import { Wallets } from './components/wallet'
-
-import { SnackbarProvider } from 'notistack';
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
@@ -81,7 +93,10 @@ function App() {
   const isSmallerScreen = useMediaQuery("(max-width: 980px)");
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
-  const history = useHistory();
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const wallets = useMemo(() => [getPhantomWallet()], []);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -100,25 +115,26 @@ function App() {
   useEffect(() => {
     if (isSidebarExpanded) handleSidebarClose();
   }, [location]);
-  const path = useMemo(() => window.location.pathname, [window.location.pathname]);
+
   return (
     <Router>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
 
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              {/* {isAppLoading && <LoadingSplash />} */}
+              <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
+                <Messages />
 
-        <SnackbarProvider>
-          <Wallets>
-            {/* {isAppLoading && <LoadingSplash />} */}
-            <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
-              <Messages />
+                <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
 
-              <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
-
-              <Stake />
-            </div>
-          </Wallets>
-        </SnackbarProvider>
+                <Stake />
+              </div>
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
       </ThemeProvider>
     </Router>
   );
