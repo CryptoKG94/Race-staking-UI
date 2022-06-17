@@ -249,8 +249,8 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
 
 const queryClient = new QueryClient();
 
-export default () => (
+export default ({setLoadingStatus, refreshFlag, updateRefreshFlag}) => (
   <QueryClientProvider client={queryClient}>
-    <TokenList />
+    <TokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
   </QueryClientProvider>
 );
