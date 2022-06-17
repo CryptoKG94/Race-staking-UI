@@ -76,6 +76,7 @@
     "react-ga4": "^1.0.5",
     "react-loading": "^2.0.3",
     "react-qr-reader": "^2.2.1",
+    "react-notifications": "^1.7.3",
     "react-query": "^3.34.8",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",

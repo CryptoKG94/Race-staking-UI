@@ -30,6 +30,8 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
 
+import { NotificationContainer } from "react-notifications";
+import "react-notifications/lib/notifications.css";
 
 import { dark as darkTheme } from "./themes/dark.js";
 import { light as lightTheme } from "./themes/light.js";
@@ -40,11 +42,6 @@ import "./style.scss";
 
 // 😬 Sorry for all the console logging
 const DEBUG = false;
-
-// 🛰 providers
-if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
-// 🔭 block explorer URL
-// const blockExplorer = targetNetwork.blockExplorer;
 
 const drawerWidth = 280;
 const transitionDuration = 969;
@@ -124,7 +121,6 @@ function App() {
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
             <WalletModalProvider>
-              {/* {isAppLoading && <LoadingSplash />} */}
               <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
                 <Messages />
 
@@ -132,6 +128,7 @@ function App() {
 
                 <Stake />
               </div>
+              <NotificationContainer />
             </WalletModalProvider>
           </WalletProvider>
         </ConnectionProvider>

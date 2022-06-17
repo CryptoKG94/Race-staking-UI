@@ -21,6 +21,8 @@ import axios from "axios";
 import { useTheme } from "@material-ui/core/styles";
 import "./stake.scss";
 
+import { NotificationManager } from "react-notifications";
+
 const collection_creator = NFT_CREATOR;
 
 function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
@@ -142,8 +144,16 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     if (tokenList.length != 0) {
       console.log('onStake', tokenList, poolID);
 
-      if (await stakeNft(tokenList, Number(poolID))) {
-        updateRefreshFlag();
+      try {
+        let res = await stakeNft(tokenList, Number(poolID));
+        if (res == "success") {
+          NotificationManager.success('Transaction success');
+          updateRefreshFlag();
+        } else {
+          NotificationManager.error('Transaction failed');
+        }
+      } catch (err) {
+        NotificationManager.error('Transaction failed');
       }
     }
 
