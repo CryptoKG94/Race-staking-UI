@@ -35,7 +35,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     return state.app.Staked;
   });
 
-  const [poolID, setPoolID] = useState('0');
+  const poolID = useRef("0");
   const tokenSelectedList = useRef([]);
   const [fetchFlag, setFetchFlag] = useState(true);
   const wallet = useWallet();
@@ -136,10 +136,10 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     })
 
     if (tokenList.length != 0) {
-      console.log('onStake', tokenList, poolID);
+      console.log('onStake', poolID.current);
 
       try {
-        let res = await stakeNft(tokenList, Number(poolID));
+        let res = await stakeNft(tokenList, Number(poolID.current));
         if (res.result == "success") {
           NotificationManager.success('Transaction succeed');
           updateRefreshFlag();
@@ -154,19 +154,21 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     setLoadingStatus(false);
   };
 
-  const onChangePool = (event) => {
-    console.log(poolID);
-    setPoolID(event.target.value);
-  };
-
   const RowRadioButtonsGroup = () => {
+    const [selVal, setSelVal] = useState(poolID.current);
+
+    const onChangePool = (event) => {
+      poolID.current = event.target.value;
+      setSelVal(event.target.value);
+    };
+
     return (
       <FormControl>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={poolID}
+          value={selVal}
           onChange={onChangePool}
         >
           <FormControlLabel value="0" control={<Radio />} label="Pool 1" />
