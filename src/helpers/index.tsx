@@ -89,6 +89,32 @@ export function prettyVestingPeriod(currentBlock: number, vestingBlock: number) 
   return prettifySeconds(seconds);
 }
 
+export function prettifySeconds_(seconds: number, resolution?: string) {
+  if ((seconds !== 0 && !seconds) || seconds < 0) {
+    return "";
+  }
+
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds - d * 3600 * 24 - h * 3600 - m * 60;
+
+  if (resolution === "day") {
+    return d + (d == 1 ? " day" : " days");
+  }
+
+  const dDisplay = d > 0 ? d + " day  " : "";
+  const hDisplay = h > 0 ? h + " h : " : "";
+  const mDisplay = m > 0 ? m + " m : " : "";
+  const sDisplay = s >= 0 ? s + " s" : "";
+
+  let result = dDisplay + hDisplay + mDisplay + sDisplay;
+  // if (mDisplay === "") {
+  //   result = result.slice(0, result.length - 2);
+  // }
+  return result;
+}
+
 export function prettifySeconds(seconds: number, resolution?: string) {
   if (seconds !== 0 && !seconds) {
     return "";
@@ -119,15 +145,16 @@ export function prettyVestingPeriod2(currentTime: number) {
     return "";
   }
 
+  let _currentTime = Math.floor(currentTime);
   // console.log("Lockup Period of time: ", currentTime.toString());
   // console.log("Current time: ", (new Date()).getTime() / 1000);
 
-  const seconds = (currentTime - (new Date()).getTime() / 1000);
+  const seconds = (_currentTime - Math.floor((new Date()).getTime() / 1000));
   if (seconds < 0) {
     return "Fully Vested";
   }
 
-  return prettifySeconds(seconds);
+  return prettifySeconds_(seconds);
 }
 
 function getSohmTokenImage() {
