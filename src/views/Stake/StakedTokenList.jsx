@@ -6,6 +6,7 @@ import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button, C
 import { unstake, emergencyWithdrawal } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
 import { prettyVestingPeriod2 } from "../../helpers";
+import { error, info } from "../../slices/MessagesSlice";
 
 import "./stake.scss";
 
@@ -89,7 +90,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
     }
 
-    console.log("_remainTimes :", _remainTimes);
+    // console.log("_remainTimes :", _remainTimes);
 
     setRemainTimes(_remainTimes)
   }
@@ -113,14 +114,22 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       }
     })
 
-    // setLoading(true);
-    let res = await unstakeNft(tokenList);
-    if (res.result == "success") {
-      // onToastOpen(SUCCESS, "Unstaking Successfully!");
-    } else {
-      // onToastOpen(WARNNING, "Unstaking Failed!");
+    try {
+      // setLoading(true);
+      console.log("[] => before unstaking ...")
+      let res = await unstakeNft(tokenList);
+      console.log("[] => unstaking result ", res)
+      if (res.result == "success") {
+        // onToastOpen(SUCCESS, "Unstaking Successfully!");
+        dispatch(info("Unstaking Successfully!"));
+      } else {
+        // onToastOpen(WARNNING, "Unstaking Failed!");
+        dispatch(error("Unstaking Failed!"));
+      }
+      updateRefreshFlag();
+    } catch (e) {
+      console.log("[] => unstaking error: ", e);
     }
-    updateRefreshFlag();
 
     // setLoading(false);
     // await dispatch(unstake({ tokenList, provider, address, networkID: chainID }));
