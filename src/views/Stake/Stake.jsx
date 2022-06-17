@@ -20,7 +20,6 @@ function Stake() {
   const [loading, setLoading] = useState(false);
 
   const updateRefreshFlag = () => {
-    alert('kk');
     setRefreshFlag(!refreshFlag);
   }
 
