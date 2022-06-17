@@ -14,6 +14,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
+import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
 
 function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -25,7 +26,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const [tokenChecked, setTokenChecked] = useState([]);
   const tokenSelectedList = useRef([]);
   const [stakeInfos, setStakeInfos] = useState([]);
-  const [remainTimes, setRemainTimes] = useState([]);
+  // const [remainTimes, setRemainTimes] = useState([]);
   const [vault_items, setVault_items] = useState([]);
   const [flag, setFlag] = useState(true);
 
@@ -76,24 +77,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
         tokenSelectedList.current.push({ "id": item.id, "selected": false });
         tokenChecked.push(false);
       })
-      let interval = null;
-      interval = setInterval(() => getRemainTime(), 1000);
-      setTokenChecked(tokenChecked);
-      return () => clearInterval(interval);
     }
   }, [stakeInfos]);
-
-  const getRemainTime = async () => {
-    let _remainTimes = [];
-    for (let i = 0; i < stakeInfos.length; i++) {
-      _remainTimes.push(prettyVestingPeriod2(Number(stakeInfos[i].stakeTime) + Number(Number(LOCK_DAY[stakeInfos[i].classId]) * SECONDS_PER_DAY)));
-
-    }
-
-    // console.log("_remainTimes :", _remainTimes);
-
-    setRemainTimes(_remainTimes)
-  }
 
   const onTokenSeltected = (event, id) => {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
@@ -150,6 +135,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
   const NFTItemView = ({ item, index }) => {
     // console.log("NFTItemView", item);
+    let unstakeTime = Number(item.stakeTime) + Number(LOCK_DAY[item.classId] * SECONDS_PER_DAY);
     return (
       <Grid item lg={3} md={3} sm={3} xs={3}>
         <div className="pool-card">
@@ -201,7 +187,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
                 {/* { (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime) } */}
-                {remainTimes[index]}
+                {/* {remainTimes[index]} */}
+                <UnstakeTimer unstakeTime={unstakeTime} />
               </Typography>
             </Grid>
           </Grid>
