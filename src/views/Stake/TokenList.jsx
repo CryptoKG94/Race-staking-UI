@@ -147,7 +147,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           NotificationManager.error('Transaction failed');
         }
       } catch (err) {
-        NotificationManager.error('Transaction failed');
+        NotificationManager.error(err.message);
       }
     }
 
@@ -221,9 +221,6 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           <Box display="flex">
             <CardHeader title="My NFT List" />
           </Box>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <RowRadioButtonsGroup />
-          </div>
           <div className="token-list-container">
             <Grid container spacing={2} className="data-grid" alignContent="center">
               {
@@ -236,6 +233,9 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
               }
             </Grid>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <RowRadioButtonsGroup />
+            </div>
             <Grid container spacing={2} className="data-grid" style={{ padding: '10px' }} alignContent="center">
               <Grid item className="stake-button">
                 <div className="stake-button-container">

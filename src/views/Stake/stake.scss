@@ -184,17 +184,21 @@
       margin: 10px;
       border-style: outset;
 
-      .pool-button-container {
-        display: flex;
-        justify-content: center;
+      .nft-list-item-image {
+        margin-bottom: 10px;
       }
+    }
 
-      .pool-button {
-        width: 80%;
-        padding: 3px;
-        margin: 3px;
-        font-size: 0.8rem;
-      }
+    .pool-button-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .pool-button {
+      // width: 80%;
+      padding: 10px;
+      margin: 10px;
+      // font-size: 0.8rem;
     }
   }
 

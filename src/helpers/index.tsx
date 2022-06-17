@@ -103,7 +103,7 @@ export function prettifySeconds_(seconds: number, resolution?: string) {
     return d + (d == 1 ? " day" : " days");
   }
 
-  const dDisplay = d > 0 ? d + " day  " : "";
+  const dDisplay = d > 0 ? d + " d : " : "";
   const hDisplay = h > 0 ? h + " h : " : "";
   const mDisplay = m > 0 ? m + " m : " : "";
   const sDisplay = s >= 0 ? s + " s" : "";

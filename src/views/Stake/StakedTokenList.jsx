@@ -11,10 +11,11 @@ import { error, info } from "../../slices/MessagesSlice";
 import "./stake.scss";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
+import { claimReward, getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
+import { NotificationManager } from "react-notifications";
 
 function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -87,7 +88,21 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     console.log(tokenSelectedList.current);
   }
 
-
+  const onClaim = async () => {
+    try {
+      let res = await claimReward(stakeInfos);
+      if (res.result == "success") {
+        NotificationManager.success('Unstaking Successfully');
+        // dispatch(info("Unstaking Successfully!"));
+      } else {
+        NotificationManager.error('Unstaking Failed!');
+        // dispatch(error("Unstaking Failed!"));
+      }
+    } catch (e) {
+      console.log(e);
+      NotificationManager.error(e.message);
+    }
+  }
 
   const onUnStake = async action => {
     let tokenList = [];
@@ -100,19 +115,16 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     })
 
     try {
-      // setLoading(true);
-      console.log("[] => before unstaking ...")
       let res = await unstakeNft(tokenList);
-      console.log("[] => unstaking result ", res)
       if (res.result == "success") {
-        dispatch(info("Unstaking Successfully!"));
+        NotificationManager.success('Unstaking Successfully');
       } else {
-        dispatch(error("Unstaking Failed!"));
+        NotificationManager.error('Unstaking Failed!');
       }
       updateRefreshFlag();
     } catch (e) {
       console.log("[] => unstaking error: ", e);
-      dispatch(error(e.message));
+      NotificationManager.error(e.message);
     }
 
     // setLoading(false);
@@ -128,7 +140,6 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
         tokenList.push(item.id);
       }
     })
-    await dispatch(emergencyWithdrawal({ tokenList, provider, address, networkID: chainID }));
   }
 
 
@@ -146,7 +157,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     // console.log("NFTItemView", item);
     let unstakeTime = Number(item.stakeTime) + Number(LOCK_DAY[item.classId] * SECONDS_PER_DAY);
     return (
-      <Grid item lg={3} md={3} sm={3} xs={3}>
+      <Grid item lg={3}>
         <div className="pool-card" onClick={e => onSelect(e)}>
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
@@ -178,22 +189,22 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
-                Reward :
+                Reward:
               </Typography>
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                {item.reward}
+                {Number(item.reward).toLocaleString()}
               </Typography>
             </Grid>
           </Grid>
           <Grid container className="data-grid" alignContent="center">
-            <Grid item lg={6} md={6} sm={6} xs={6}>
+            <Grid item lg={3} md={4} sm={4} xs={4}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
-                RemainTime :
+                Remain:
               </Typography>
             </Grid>
-            <Grid item lg={6} md={6} sm={6} xs={6}>
+            <Grid item lg={9} md={8} sm={8} xs={8}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
                 {/* { (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime) } */}
                 {/* {remainTimes[index]} */}
@@ -237,22 +248,32 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
                   variant="contained"
                   color="primary"
                   onClick={() => {
+                    onClaim();
+                  }}
+                >
+                  Claim
+                </Button>
+                <Button
+                  className="pool-button"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
                     onUnStake();
                   }}
                 >
-                  Claim & Unstake
+                  Unstake
                 </Button>
                 {/* <Button
-                    className="pool-button"
-                    variant="contained"
-                    color="primary"
-                    style = {{ color: 'white', background: 'red', marginLeft: '20px'}}
-                    onClick={() => {
-                      onEmergencyWithdrawal();
-                    }}
-                  >
-                    Emergency Withdrawal
-                  </Button> */}
+                  className="pool-button"
+                  variant="contained"
+                  color="primary"
+                  style={{ color: 'white', background: 'red', marginLeft: '20px' }}
+                  onClick={() => {
+                    onEmergencyWithdrawal();
+                  }}
+                >
+                  Emergency Withdrawal
+                </Button> */}
               </Grid>
             </Grid>
           </div>
