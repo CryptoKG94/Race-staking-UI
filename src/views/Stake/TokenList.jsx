@@ -130,6 +130,8 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   }
 
   const onStake = async () => {
+    setLoadingStatus(true);
+
     let tokenList = [];
     tokenSelectedList.current.map((item, index) => {
       if (item.selected) {
@@ -137,17 +139,16 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       }
     })
 
-    if (tokenList.length == 0) {
-      return;
+    if (tokenList.length != 0) {
+      console.log('onStake', tokenList, poolID);
+
+      if (await stakeNft(tokenList, Number(poolID))) {
+        updateRefreshFlag();
+      }
     }
 
-    console.log('onStake', tokenList, poolID);
-
-    if (await stakeNft(tokenList, Number(poolID))) {
-      updateRefreshFlag();
-    }
+    setLoadingStatus(false);
   };
-
 
   const onChangePool = (event) => {
     console.log(poolID);
