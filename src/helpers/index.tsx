@@ -19,10 +19,10 @@ export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   const pairContract = new ethers.Contract(ohm_dai_address, PairContract, provider);
   const reserves = await pairContract.getReserves();
 
-  
-  const reserves0 = getDisplayBalance(reserves[0],9)
-  const reserves1 = getDisplayBalance(reserves[1],18,2)
-  const marketPrice = (Number(reserves1))/Number(reserves0);
+
+  const reserves0 = getDisplayBalance(reserves[0], 9)
+  const reserves1 = getDisplayBalance(reserves[1], 18, 2)
+  const marketPrice = (Number(reserves1)) / Number(reserves0);
   console.log('marketPrice', marketPrice);
   console.log('reserve0', reserves0);
   console.log('reserve1', reserves1);
@@ -119,8 +119,8 @@ export function prettyVestingPeriod2(currentTime: number) {
     return "";
   }
 
-  console.log("Lockup Period of time: ", currentTime.toString());
-  console.log("Current time: ", (new Date()).getTime() / 1000);
+  // console.log("Lockup Period of time: ", currentTime.toString());
+  // console.log("Current time: ", (new Date()).getTime() / 1000);
 
   const seconds = (currentTime - (new Date()).getTime() / 1000);
   if (seconds < 0) {
@@ -131,7 +131,7 @@ export function prettyVestingPeriod2(currentTime: number) {
 }
 
 function getSohmTokenImage() {
-  return <img src={LogoImg} style={{ height: "1rem", width: "1rem",borderRadius:"50%"}}/>
+  return <img src={LogoImg} style={{ height: "1rem", width: "1rem", borderRadius: "50%" }} />
   // <SvgIcon component={SOhmImg} viewBox="0 0 100 100" style={{ height: "1rem", width: "1rem" }} />;
 }
 
@@ -139,7 +139,7 @@ export function getOhmTokenImage(w?: number, h?: number) {
   const height = h == null ? "32px" : `${h}px`;
   const width = w == null ? "32px" : `${w}px`;
   return <img src={LogoImg} style={{ height, width }} />
-  
+
   // <SvgIcon component={OhmImg} viewBox="0 0 32 32" style={{ height, width }} />;
 }
 
@@ -223,13 +223,13 @@ export const subtractDates = (dateA: Date, dateB: Date) => {
 
 
 export const getDisplayBalance = (balance: BigNumber, decimals = 18, fractionDigits = 4) => {
-  try{
-    if(balance){
+  try {
+    if (balance) {
       // fractionDigits = decimals<=10 ?  2 : fractionDigits 
       const number = getBalance(balance, decimals - fractionDigits)
       return String(parseFloat((number / 10 ** fractionDigits).toFixed(fractionDigits)))
     }
-  }catch(e){
+  } catch (e) {
     // console.error(e,'----------------balance-------------',balance)
   }
 }
@@ -238,6 +238,6 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
   return getDisplayBalance(balance, decimals)
 };
 
-export function getBalance(balance: BigNumber, decimals = 18) : number {
+export function getBalance(balance: BigNumber, decimals = 18): number {
   return balance.div(BigNumber.from(10).pow(decimals)).toNumber()
 }

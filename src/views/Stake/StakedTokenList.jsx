@@ -10,9 +10,9 @@ import { prettyVestingPeriod2 } from "../../helpers";
 import "./stake.scss";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { getStakedInfo } from "src/context/helper/nft-staking";
+import { getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
-import { CLASS_TYPES, SECONDS_PER_DAY } from "src/context/constants";
+import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 
 function StakedTokenList(props) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -26,6 +26,7 @@ function StakedTokenList(props) {
   const [stakeInfos, setStakeInfos] = useState([]);
   const [remainTimes, setRemainTimes] = useState([]);
   const [vault_items, setVault_items] = useState([]);
+  const [flag, setFlag] = useState(true);
 
   const setLoading = props.setLoading;
 
@@ -53,15 +54,19 @@ function StakedTokenList(props) {
     }
     // setVault_items(arr);
     setStakeInfos(arr);
+    console.log("[] => update stakeinfos ......",);
   }
 
   useEffect(() => {
     async function getStakeInfo() {
-      await fetchStakedInfo();
+      if (flag && connected) {
+        await fetchStakedInfo();
+        setFlag(false);
+      }
     }
 
     getStakeInfo();
-  }, [connected]);
+  }, [connected, flag]);
 
   useEffect(() => {
     if (stakeInfos !== null && stakeInfos !== undefined) {
@@ -70,15 +75,17 @@ function StakedTokenList(props) {
         tokenSelectedList.current.push({ "id": item.id, "selected": false });
         tokenChecked.push(false);
       })
-      setInterval(() => getRemainTime(), 30000);
+      let interval = null;
+      interval = setInterval(() => getRemainTime(), 1000);
       setTokenChecked(tokenChecked);
+      return () => clearInterval(interval);
     }
   }, [stakeInfos]);
 
   const getRemainTime = async () => {
     let _remainTimes = [];
     for (let i = 0; i < stakeInfos.length; i++) {
-      _remainTimes.push(prettyVestingPeriod2(stakeInfos[i].stakeTime));
+      _remainTimes.push(prettyVestingPeriod2(Number(stakeInfos[i].stakeTime) + Number(Number(LOCK_DAY[stakeInfos[i].classId]) * SECONDS_PER_DAY)));
 
     }
 
@@ -106,7 +113,17 @@ function StakedTokenList(props) {
       }
     })
 
-    await dispatch(unstake({ tokenList, provider, address, networkID: chainID }));
+    // setLoading(true);
+    let res = await unstakeNft(tokenList);
+    if (res.result == "success") {
+      // onToastOpen(SUCCESS, "Unstaking Successfully!");
+    } else {
+      // onToastOpen(WARNNING, "Unstaking Failed!");
+    }
+    setFlag(true);
+
+    // setLoading(false);
+    // await dispatch(unstake({ tokenList, provider, address, networkID: chainID }));
   };
 
   const onEmergencyWithdrawal = async action => {
@@ -123,7 +140,7 @@ function StakedTokenList(props) {
 
 
   const NFTItemView = ({ item, index }) => {
-    console.log("NFTItemView", item);
+    // console.log("NFTItemView", item);
     return (
       <Grid item lg={3} md={3} sm={3} xs={3}>
         <div className="pool-card">
