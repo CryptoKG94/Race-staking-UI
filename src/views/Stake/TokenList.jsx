@@ -197,7 +197,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
               <Checkbox style={{ marginTop: '-10px' }}
-                checked={checked} />
+                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} />
             </Grid>
           </Grid>
 
