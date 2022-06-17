@@ -137,6 +137,10 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
       }
     })
 
+    if (tokenList.length == 0) {
+      return;
+    }
+
     console.log('onStake', tokenList, poolID);
 
     if (await stakeNft(tokenList, Number(poolID))) {
