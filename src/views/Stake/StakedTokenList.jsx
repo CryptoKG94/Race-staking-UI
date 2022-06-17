@@ -98,6 +98,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
         NotificationManager.error('Claim Failed!');
         // dispatch(error("Unstaking Failed!"));
       }
+      updateRefreshFlag();
     } catch (e) {
       console.log(e);
       NotificationManager.error(e.message);
