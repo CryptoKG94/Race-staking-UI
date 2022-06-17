@@ -55,7 +55,7 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
 
   useEffect(() => {
     async function fetchAll() {
-      // console.log("Fetching...............")
+      console.log("Fetching...............")
       if (wallet && wallet.publicKey) {
         // console.log('fetchFlag:  TRUE')
         await fetchUnstakedInfo()
@@ -126,7 +126,7 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
     tokenChecked[id] = event.target.checked;
     setTokenChecked([...tokenChecked]);
-    console.log(tokenSelectedList.current);
+    console.log('token selected', tokenSelectedList.current);
   }
 
   const onStake = async () => {
