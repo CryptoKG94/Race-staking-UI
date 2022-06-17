@@ -303,10 +303,14 @@ export const sendTransactions = async (
       txIds.push(txId);
       console.log('txId', txId);
 
-      let res = await connection.confirmTransaction(txId, "confirmed");
-      // toast.dismiss(confirming_id);
-      if (res.value.err) resStr = "failed"; //showToast(`Transaction Failed`, 2000, 1);
-      // else showToast(`Transaction Confirmed`, 2000)
+      try {
+        let res = await connection.confirmTransaction(txId, "confirmed");
+        // toast.dismiss(confirming_id);
+        if (res.value.err) resStr = "failed"; //showToast(`Transaction Failed`, 2000, 1);
+        // else showToast(`Transaction Confirmed`, 2000)
+      } catch (error) {
+        resStr = "failed";
+      }
     } else {
       // let confirming_id = showToast(`Confirming Transaction 1 of ${signedTxns.length}...`, -1, 2);
       for (let i = 0; i < signedTxns.length; i++) {
@@ -315,8 +319,13 @@ export const sendTransactions = async (
         txIds.push(txId);
         console.log('txId', txId);
 
-        let res = await connection.confirmTransaction(txId, "confirmed");
-        if (res.value.err) {
+        try {
+          let res = await connection.confirmTransaction(txId, "confirmed");
+          if (res.value.err) {
+            resStr = "failed"; //showToast(`Transaction Failed`, 2000, 1);
+            break;
+          }
+        } catch (error) {
           resStr = "failed"; //showToast(`Transaction Failed`, 2000, 1);
           break;
         }
