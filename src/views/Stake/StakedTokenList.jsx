@@ -105,15 +105,14 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       let res = await unstakeNft(tokenList);
       console.log("[] => unstaking result ", res)
       if (res.result == "success") {
-        // onToastOpen(SUCCESS, "Unstaking Successfully!");
         dispatch(info("Unstaking Successfully!"));
       } else {
-        // onToastOpen(WARNNING, "Unstaking Failed!");
         dispatch(error("Unstaking Failed!"));
       }
       updateRefreshFlag();
     } catch (e) {
       console.log("[] => unstaking error: ", e);
+      dispatch(error(e.message));
     }
 
     // setLoading(false);
