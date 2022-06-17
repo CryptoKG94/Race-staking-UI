@@ -4,15 +4,6 @@ import { Paper, Link, Typography } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { ReactComponent as MenuIcon } from "../../assets/icons/hamburger.svg";
-import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
-import { ReactComponent as WrapIcon } from "../../assets/icons/wrap.svg";
-import OhmMenu from "./OhmMenu.jsx";
-import ThemeSwitcher from "./ThemeSwitch.jsx";
-import ConnectMenu from "./ConnectMenu.jsx";
-import Logo from "./Logo.jsx"
-import MenuBar from "./Menubar.jsx";
-import { styled } from "@mui/system";
 
 import { WalletConnect } from "../wallet";
 
