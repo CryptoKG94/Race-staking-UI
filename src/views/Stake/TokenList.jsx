@@ -23,7 +23,7 @@ import "./stake.scss";
 
 const collection_creator = NFT_CREATOR;
 
-function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
+function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
@@ -253,7 +253,7 @@ function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
 
 const queryClient = new QueryClient();
 
-export default ({setLoadingStatus, refreshFlag, updateRefreshFlag}) => (
+export default ({ setLoadingStatus, refreshFlag, updateRefreshFlag }) => (
   <QueryClientProvider client={queryClient}>
     <TokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
   </QueryClientProvider>

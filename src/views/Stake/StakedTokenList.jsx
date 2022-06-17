@@ -44,16 +44,16 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
       arr.push({
         id: stakedInfo[i].account.nftAddr.toBase58(),
-        uri,
+        uri: uri.image,
         reward: reward,
         name: uri.name,
         classId: stakedInfo[i].account.classId,
         lastUpdateTime: stakedInfo[i].account.lastUpdateTime,
         stakeTime: stakedInfo[i].account.stakeTime,
       });
-      // console.log("STAKED NAME ^^^^^^^^^^^^^ ", uri.data.name);
     }
     // setVault_items(arr);
+    console.log("[]=> arr ^^^^^^^^^^^^^ ", arr);
     setStakeInfos(arr);
     console.log("[] => update stakeinfos ......",);
   }
@@ -166,7 +166,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           </Grid>
 
           <Grid container className="data-grid" alignContent="center">
-            <img src={item.url} className="nft-list-item-image" width={"100%"} />
+            <img src={item?.uri} className="nft-list-item-image" width={"100%"} />
           </Grid>
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
