@@ -14,7 +14,7 @@ import { getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
 import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 
-function StakedTokenList(props) {
+function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function StakedTokenList(props) {
   const [vault_items, setVault_items] = useState([]);
   const [flag, setFlag] = useState(true);
 
-  const setLoading = props.setLoading;
+  // const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
     let stakedInfo = await getStakedInfo(publicKey?.toBase58());
@@ -61,12 +61,12 @@ function StakedTokenList(props) {
     async function getStakeInfo() {
       if (flag && connected) {
         await fetchStakedInfo();
-        setFlag(false);
+        // setFlag(false);
       }
     }
 
     getStakeInfo();
-  }, [connected, flag]);
+  }, [connected, refreshFlag]);
 
   useEffect(() => {
     if (stakeInfos !== null && stakeInfos !== undefined) {
@@ -120,7 +120,7 @@ function StakedTokenList(props) {
     } else {
       // onToastOpen(WARNNING, "Unstaking Failed!");
     }
-    setFlag(true);
+    updateRefreshFlag();
 
     // setLoading(false);
     // await dispatch(unstake({ tokenList, provider, address, networkID: chainID }));
@@ -261,8 +261,8 @@ function StakedTokenList(props) {
 
 const queryClient = new QueryClient();
 
-export default (props) => (
+export default ({ setLoadingStatus, refreshFlag, updateRefreshFlag }) => (
   <QueryClientProvider client={queryClient}>
-    <StakedTokenList props />
+    <StakedTokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
   </QueryClientProvider>
 );

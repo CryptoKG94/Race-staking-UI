@@ -122,7 +122,7 @@ function Stake() {
         }}
       >
         <TokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
-        <StakedTokenList setLoading={setPageLoading} loading={loading} />
+        <StakedTokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
         <PoolList />
 
       </Container >
