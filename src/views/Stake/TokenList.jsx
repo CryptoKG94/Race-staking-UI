@@ -9,11 +9,13 @@ import { useSelector } from "react-redux";
 import { trim, formatCurrency } from "../../helpers";
 import { stake } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
+import { PublicKey } from '@solana/web3.js';
 
 import { getNftMetadataURI, getAllNftData } from "../../context/utils";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { stakeNft, getStakedInfo } from "../../context/helper/nft-staking";
 import { NFT_CREATOR } from "../../context/constants";
-import { stakeNft } from "../../context/helper/nft-staking";
+
+import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
 
 import { useTheme } from "@material-ui/core/styles";
@@ -70,6 +72,8 @@ function TokenList() {
       // let collection = data.filter((item) => item.data.creators &&
       //  (item.data.creators.filter((creator) => creator.verified == 1))[0].address == collection_creator);
 
+      let stakedInfo = await getStakedInfo(wallet.publicKey);
+
       let collection = [];
       for (let i = 0; i < data.length; i++) {
         let item = data[i];
@@ -77,8 +81,21 @@ function TokenList() {
           let verifiedCreators = item.data.creators.filter((creator) => creator.verified == 1);
           if (verifiedCreators && verifiedCreators.length > 0) {
             if (verifiedCreators[0].address == collection_creator) {
+              // check staked nft
+              let isStaked = false;
+              for (let s_idx = 0; s_idx < stakedInfo.length; s_idx++) {
+                if (stakedInfo[s_idx].account.nftAddr.equals(new PublicKey(item.mint))) {
+                  isStaked = true;
+                  break;
+                }
+              }
+              if (isStaked) {
+                continue;
+              }
+
+              // get uri
               let uri = await axios.get(item.data.uri);
-              collection.push({mint: item.mint, uri: uri.data});
+              collection.push({ mint: item.mint, uri: uri.data });
             }
           }
         }
