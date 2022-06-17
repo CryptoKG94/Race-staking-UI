@@ -36,7 +36,6 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   });
 
   const [poolID, setPoolID] = useState('0');
-  const [tokenChecked, setTokenChecked] = useState([]);
   const tokenSelectedList = useRef([]);
   const [fetchFlag, setFetchFlag] = useState(true);
   const wallet = useWallet();
@@ -48,10 +47,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       tokenSelectedList.current = [];
       tokenIDList.map((item, index) => {
         tokenSelectedList.current.push({ "id": tokenIDList[index], "selected": false });
-        tokenChecked.push(false);
       })
-
-      setTokenChecked(tokenChecked);
     }
   }, [tokenIDList]);
 
@@ -126,8 +122,6 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
   const onTokenSeltected = (event, id) => {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
-    tokenChecked[id] = event.target.checked;
-    setTokenChecked([...tokenChecked]);
     console.log('token selected', tokenSelectedList.current);
   }
 
@@ -147,7 +141,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       try {
         let res = await stakeNft(tokenList, Number(poolID));
         if (res == "success") {
-          NotificationManager.success('Transaction success');
+          NotificationManager.success('Transaction succeed');
           updateRefreshFlag();
         } else {
           NotificationManager.error('Transaction failed');
@@ -186,9 +180,15 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   }
 
   const NFTItemView = ({ nft_item, index }) => {
+    const [checked, setChecked] = useState(false);
+    const onSelect = (e) => {
+      setChecked(checked => !checked);
+      onTokenSeltected(e, index);
+    }
+
     return (
       <Grid item lg={3}>
-        <div className="pool-card">
+        <div className="pool-card" onClick={e => onSelect(e)}>
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
               <Typography variant="h6" >
@@ -197,7 +197,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
               <Checkbox style={{ marginTop: '-10px' }}
-                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
+                checked={checked} />
             </Grid>
           </Grid>
 
