@@ -61,7 +61,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     }
 
     fetchAll();
-  }, [refreshFlag, wallet])
+  }, [refreshFlag, wallet.connected])
 
   const fetchUnstakedInfo = async () => {
     let data = await getNftTokenData();
@@ -103,7 +103,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
         tokenSelectedList.current.push({ "id": collection[index], "selected": false });
       })
 
-      console.log('result : ', collection);
+      // console.log('result : ', collection);
       setTokenIDList(collection);
     }
   }
@@ -127,7 +127,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
   const onTokenSeltected = (event, id) => {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
-    console.log('token selected', tokenSelectedList.current);
+    // console.log('token selected', tokenSelectedList.current);
   }
 
   const onStake = async () => {
@@ -141,7 +141,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     })
 
     if (tokenList.length != 0) {
-      console.log('onStake', poolID.current);
+      // console.log('onStake', poolID.current);
 
       try {
         let res = await stakeNft(tokenList, Number(poolID.current));

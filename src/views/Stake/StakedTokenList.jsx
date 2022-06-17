@@ -54,10 +54,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
         stakeTime: stakedInfo[i].account.stakeTime,
       });
     }
-    // setVault_items(arr);
-    console.log("[]=> arr ^^^^^^^^^^^^^ ", arr);
     setStakeInfos(arr);
-    console.log("[] => update stakeinfos ......",);
+    // console.log("[] => update stakeinfos ......",);
   }
 
   useEffect(() => {
@@ -85,7 +83,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
     // tokenChecked[id] = event.target.checked;
     // setTokenChecked([...tokenChecked]);
-    console.log(tokenSelectedList.current);
+    // console.log(tokenSelectedList.current);
   }
 
   const onClaim = async () => {
