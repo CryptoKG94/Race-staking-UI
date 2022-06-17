@@ -14,7 +14,15 @@ function Stake() {
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
 
+  const [loadingStatus, setLoadingStatus] = useState(false);
+  const [refreshFlag, setRefreshFlag] = useState(false);
+
   const [loading, setLoading] = useState(false);
+
+  const updateRefreshFlag = () => {
+    setRefreshFlag(!refreshFlag);
+  }
+
   // const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
 
   // const PoolItem = () => {
@@ -113,7 +121,7 @@ function Stake() {
           paddingRight: smallerScreen || verySmallScreen ? "0" : "2.3rem",
         }}
       >
-        <TokenList />
+        <TokenList setLoadingStatus={setLoadingStatus} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
         <StakedTokenList setLoading={setPageLoading} loading={loading} />
         <PoolList />
 

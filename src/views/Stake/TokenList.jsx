@@ -23,7 +23,7 @@ import "./stake.scss";
 
 const collection_creator = NFT_CREATOR;
 
-function TokenList() {
+function TokenList({setLoadingStatus, refreshFlag, updateRefreshFlag}) {
   const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
@@ -56,15 +56,14 @@ function TokenList() {
   useEffect(() => {
     async function fetchAll() {
       // console.log("Fetching...............")
-      if (fetchFlag && wallet && wallet.publicKey) {
+      if (wallet && wallet.publicKey) {
         // console.log('fetchFlag:  TRUE')
         await fetchUnstakedInfo()
-        setFetchFlag(false)
       }
     }
 
     fetchAll();
-  }, [fetchFlag, wallet])
+  }, [refreshFlag, wallet])
 
   const fetchUnstakedInfo = async () => {
     let data = await getNftTokenData();
@@ -140,7 +139,9 @@ function TokenList() {
 
     console.log('onStake', tokenList, poolID);
 
-    await stakeNft(tokenList, Number(poolID));
+    if (await stakeNft(tokenList, Number(poolID))) {
+      updateRefreshFlag();
+    }
   };
 
 
