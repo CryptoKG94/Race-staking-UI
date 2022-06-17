@@ -82,8 +82,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
   const onTokenSeltected = (event, id) => {
     tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
-    tokenChecked[id] = event.target.checked;
-    setTokenChecked([...tokenChecked]);
+    // tokenChecked[id] = event.target.checked;
+    // setTokenChecked([...tokenChecked]);
     console.log(tokenSelectedList.current);
   }
 
@@ -134,20 +134,30 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
 
   const NFTItemView = ({ item, index }) => {
+    const [checked, setChecked] = useState(false);
+    useEffect(() => {
+      setChecked(false);
+    }, [item]);
+
+    const onSelect = (e) => {
+      setChecked(checked => !checked);
+      onTokenSeltected(e, index);
+    }
+
     // console.log("NFTItemView", item);
     let unstakeTime = Number(item.stakeTime) + Number(LOCK_DAY[item.classId] * SECONDS_PER_DAY);
     return (
       <Grid item lg={3} md={3} sm={3} xs={3}>
-        <div className="pool-card">
+        <div className="pool-card" onClick={e => onSelect(e)}>
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={9}  >
               <Typography variant="h6" >
-                NFT ID: {item.name.toString()}
+                {item.name.toString()}
               </Typography>
             </Grid>
             <Grid item lg={3} style={{ display: "flex", justifyContent: "center" }}>
               <Checkbox style={{ marginTop: '-10px' }}
-                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} onClick={e => onTokenSeltected(e, index)} />
+                checked={tokenSelectedList.current && tokenSelectedList.current[index] ? tokenSelectedList.current[index].selected : false} />
             </Grid>
           </Grid>
 

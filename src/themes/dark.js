@@ -317,6 +317,20 @@ export const dark = responsiveFontSizes(
               backgroundColor: "#ffffff0a",
             }
           }
+        },
+        MuiCheckbox: {
+          colorSecondary: {
+            // color: darkTheme.gold,
+            "&$checked": {
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#ffffff0a",
+              }
+            },
+            "&:hover": {
+              backgroundColor: "#ffffff0a",
+            }
+          }
         }
       },
     },
