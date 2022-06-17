@@ -42,14 +42,14 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
   const [tokenIDList, setTokenIDList] = useState([]);
 
-  useEffect(() => {
-    if (tokenIDList !== null && tokenIDList !== undefined) {
-      tokenSelectedList.current = [];
-      tokenIDList.map((item, index) => {
-        tokenSelectedList.current.push({ "id": tokenIDList[index], "selected": false });
-      })
-    }
-  }, [tokenIDList]);
+  // useEffect(() => {
+  //   if (tokenIDList !== null && tokenIDList !== undefined) {
+  //     tokenSelectedList.current = [];
+  //     tokenIDList.map((item, index) => {
+  //       tokenSelectedList.current.push({ "id": tokenIDList[index], "selected": false });
+  //     })
+  //   }
+  // }, [tokenIDList]);
 
   useEffect(() => {
     async function fetchAll() {
@@ -97,6 +97,11 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           }
         }
       }
+
+      tokenSelectedList.current = [];
+      collection.map((item, index) => {
+        tokenSelectedList.current.push({ "id": collection[index], "selected": false });
+      })
 
       console.log('result : ', collection);
       setTokenIDList(collection);
