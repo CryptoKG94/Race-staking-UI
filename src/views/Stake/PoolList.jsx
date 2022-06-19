@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useWeb3Context } from "../../hooks";
 import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
 import { useSelector } from "react-redux";
-import { trim, formatCurrency } from "../../helpers";
 import CardHeader from "../../components/CardHeader/CardHeader";
 import { prettifySeconds } from "../../helpers";
 
@@ -13,19 +10,9 @@ import { useTheme } from "@material-ui/core/styles";
 import "./stake.scss";
 
 function PoolList() {
-  const [data, setData] = useState(null);
-  const [apy, setApy] = useState(null);
-  const [runway, setRunway] = useState(null);
-  // const [staked, setStaked] = useState(null);
-  const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
   const dispatch = useDispatch();
-
-  const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
-  const staked = useSelector(state => {
-    return state.app.Staked;
-  });
 
   let initialPoolList = [
     {
@@ -58,7 +45,7 @@ function PoolList() {
       for (let i = 0; i < poolInfos.lockUpPeriods.length; i++) {
         initialPoolList[i].lockDay = poolInfos.lockUpPeriods[i];
         initialPoolList[i].reward = poolInfos.rewardMultipliers[i];
-        console.log("poolInfos.rewardMultipliers[i]", poolInfos.rewardMultipliers[i]);
+        // console.log("poolInfos.rewardMultipliers[i]", poolInfos.rewardMultipliers[i]);
         // initialPoolList[i].totalStaked = poolInfos.totalStakeds[i];
 
       }
@@ -71,7 +58,7 @@ function PoolList() {
   // })
 
   const PoolItemView = ({ item }) => {
-    console.log("PoolItemView", item);
+    // console.log("PoolItemView", item);
     return (
       < Grid item lg={4} md={4} sm={6} xs={12} style={{ justifyContent: "center" }} >
         <div className="pool-card">
