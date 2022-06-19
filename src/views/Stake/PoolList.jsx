@@ -17,20 +17,20 @@ function PoolList() {
   let initialPoolList = [
     {
       id: 0,
-      lockDay: '1 month',
-      reward: '110',
+      lockDay: 'no lock',
+      reward: '10 $PANDA per day',
       totalStaked: 0
     },
     {
       id: 1,
-      lockDay: '3 months',
-      reward: '130',
+      lockDay: '14 days',
+      reward: '15 $PANDA per day',
       totalStaked: 0
     },
     {
       id: 2,
-      lockDay: '6 months',
-      reward: '160',
+      lockDay: '30 days',
+      reward: '25 $PANDA per day',
       totalStaked: 0
     }
   ];
@@ -106,7 +106,7 @@ function PoolList() {
             </Grid>
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-value" align={'right'}>
-                {'x ' + (item.reward / 100).toFixed(2)}
+                {item.reward}
               </Typography>
             </Grid>
           </Grid>
