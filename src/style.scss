@@ -3,12 +3,12 @@
     box-sizing: border-box;
     -ms-overflow-style: none !important;
     /* IE and Edge */
-    scrollbar-width: none !important;
+    // scrollbar-width: none !important;
 
     /* Firefox */
-    &::-webkit-scrollbar {
-        display: none !important;
-    }
+    // &::-webkit-scrollbar {
+    //     display: none !important;
+    // }
 }
 
 html,

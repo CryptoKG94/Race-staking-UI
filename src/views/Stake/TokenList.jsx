@@ -224,7 +224,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       }}
     >
       <Zoom in={true}>
-        <Paper className="ohm-card">
+        <Paper className="ohm-card custom-scroll-bar">
           <Box display="flex">
             <CardHeader title="My NFT List" />
           </Box>
