@@ -12,7 +12,7 @@ import CardHeader from "../../components/CardHeader/CardHeader";
 import { PublicKey } from '@solana/web3.js';
 
 import { getNftMetadataURI, getAllNftData } from "../../context/utils";
-import { stakeNft, getStakedInfo } from "../../context/helper/nft-staking";
+import { stakeRace, getStakedInfo, getWalletBalance } from "../../context/helper/token-staking";
 import { NFT_CREATOR } from "../../context/constants";
 
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -55,10 +55,8 @@ function UnstakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag 
   }, [refreshFlag, wallet.connected])
 
   const fetchUnstakedInfo = async () => {
-    let wallet_value = 1; // = await getNftTokenData();
-
-    
-    setTokenBalance(wallet_value);
+    let wallet_balance = await getWalletBalance();
+    setTokenBalance(wallet_balance);
   }
 
   const onTokenSeltected = (event, id) => {
@@ -69,27 +67,16 @@ function UnstakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag 
   const onStake = async () => {
     setLoadingStatus(true);
 
-    let tokenList = [];
-    tokenSelectedList.current.map((item, index) => {
-      if (item.selected) {
-        tokenList.push(item.id.mint);
+    try {
+      let res = await stakeRace();
+      if (res.result == "success") {
+        NotificationManager.success('Transaction succeed');
+        updateRefreshFlag();
+      } else {
+        NotificationManager.error('Transaction failed');
       }
-    })
-
-    if (tokenList.length != 0) {
-      // console.log('onStake', poolID.current);
-
-      try {
-        let res = await stakeNft(tokenList, Number(poolID.current));
-        if (res.result == "success") {
-          NotificationManager.success('Transaction succeed');
-          updateRefreshFlag();
-        } else {
-          NotificationManager.error('Transaction failed');
-        }
-      } catch (err) {
-        NotificationManager.error(err.message);
-      }
+    } catch (err) {
+      NotificationManager.error(err.message);
     }
 
     setLoadingStatus(false);

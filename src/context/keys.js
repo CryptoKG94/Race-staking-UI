@@ -4,8 +4,13 @@ import {
     RS_STAKEINFO_SEED,
     RS_STAKE_SEED,
     RS_VAULT_SEED,
+    RACE_PREFIX,
+    RACE_STAKEINFO_SEED,
+    RACE_STAKE_SEED,
+    RACE_VAULT_SEED,
     PROGRAM_ID,
-    RACE_TOKEN_MINT
+    RACE_TOKEN_MINT,
+    RACE_STAKING_PROGRAM_ID
 } from "./constants"
 
 /** Get NFT Staking Account Keys  */
@@ -56,6 +61,38 @@ export const getStakeInfoKey = async (
 };
 
 
+/** Get Token Staking Account Keys  */
+export const getPoolStateKey = async () => {
+    const [poolKey] = await asyncGetPda(
+        [Buffer.from(RACE_PREFIX)],
+        RACE_STAKING_PROGRAM_ID
+    );
+    return poolKey;
+};
+
+export const getRacePoolKey = async () => {
+    const [rewardVaultKey] = await asyncGetPda(
+        [
+            Buffer.from(RACE_VAULT_SEED),
+            RACE_TOKEN_MINT.toBuffer()
+        ],
+        RACE_STAKING_PROGRAM_ID
+    );
+    return rewardVaultKey;
+};
+
+export const getRaceStakeInfoKey = async (
+    userKey
+) => {
+    const [stakedNftKey] = await asyncGetPda(
+        [
+            Buffer.from(RACE_STAKEINFO_SEED),
+            userKey.toBuffer()
+        ],
+        RACE_STAKING_PROGRAM_ID
+    );
+    return stakedNftKey;
+};
 
 const asyncGetPda = async (
     seeds,

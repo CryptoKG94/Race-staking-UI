@@ -7,7 +7,7 @@ import {
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { isValidSolanaAddress } from "@nfteyez/sol-rayz";
 
-import { IDL } from '../anchor_idl/idl/staking_program';
+import { IDL } from '../anchor_idl/idl/nft_staking_program';
 import RARITY from '../rarity.json';
 
 import {

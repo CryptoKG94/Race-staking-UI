@@ -67,3 +67,9 @@ export const INITIALIZER = new PublicKey(
 )
 
 // console.log("*********", IS_MAINNET, NETWORK, SWRD_TOKEN_MINT.toBase58());
+
+export const RACE_STAKING_PROGRAM_ID = new PublicKey(
+    IS_MAINNET ?
+        "6RhXNaW1oQYQmjTc1ypb4bEFe1QasPAgEfFNhQ3HnSqo" :
+        "CW7ALT4EkoLq5iaAtV1nFtetLZctwWEMQpM1uzKEk8ST"
+)

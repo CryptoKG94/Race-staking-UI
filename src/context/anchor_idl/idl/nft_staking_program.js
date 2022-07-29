@@ -1,6 +1,6 @@
 export const IDL = {
   "version": "0.1.0",
-  "name": "puffu_staking_program",
+  "name": "race_nft_staking_program",
   "instructions": [
     {
       "name": "initializeStakingPool",
@@ -47,7 +47,7 @@ export const IDL = {
           "type": {
             "array": [
               "u16",
-              3
+              10
             ]
           }
         },
@@ -56,7 +56,7 @@ export const IDL = {
           "type": {
             "array": [
               "u16",
-              3
+              10
             ]
           }
         }
@@ -362,13 +362,18 @@ export const IDL = {
           "type": {
             "array": [
               "u16",
-              3
+              10
             ]
           }
         },
         {
-          "name": "lockDay",
-          "type": "u32"
+          "name": "lockDayByClass",
+          "type": {
+            "array": [
+              "u16",
+              10
+            ]
+          }
         },
         {
           "name": "paused",
@@ -462,7 +467,7 @@ export const IDL = {
             "type": {
               "array": [
                 "u16",
-                3
+                10
               ]
             }
           },
@@ -471,7 +476,7 @@ export const IDL = {
             "type": {
               "array": [
                 "u16",
-                3
+                10
               ]
             }
           }
@@ -550,6 +555,6 @@ export const IDL = {
     }
   ],
   "metadata": {
-    "address": "7RdikeoWp1fzYyw6k1tpoULgZEQ33tFnRE3Nf111NBuu"
+    "address": "Qz6kV3hatXXx5EJuYhmukkiEUt282VeEMz6YwwBaaMn"
   }
 }

@@ -11,7 +11,7 @@ import { error, info } from "../../slices/MessagesSlice";
 import "./tokenstake.scss";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { claimReward, getStakedInfo, unstakeNft } from "src/context/helper/nft-staking";
+import { getStakedInfo, unstakeRace } from "src/context/helper/token-staking";
 import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
@@ -34,9 +34,9 @@ function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag })
   // const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
-    let stakedInfo = 2; // = await getStakedInfo(publicKey?.toBase58());
-    
-    setStakeInfos(stakedInfo);
+    let stakedInfo = await getStakedInfo(publicKey?.toBase58());
+
+    // setStakeInfos(stakedInfo);
   }
 
   useEffect(() => {
@@ -51,20 +51,10 @@ function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag })
   }, [connected, refreshFlag]);
 
   const onUnStake = async action => {
-    let tokenList = [];
-    let poolList = [];
-
-    tokenSelectedList.current.map((item, index) => {
-      if (item.selected) {
-        tokenList.push(item.id);
-      }
-    })
-
-    if (tokenList.length < 0) return;
 
     try {
       setLoadingStatus(true);
-      let res = await unstakeNft(tokenList);
+      let res = await unstakeRace();
       setLoadingStatus(false);
       if (res.result == "success") {
         NotificationManager.success('Unstaked Successfully');
@@ -107,7 +97,7 @@ function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag })
           </Box>
           <div className="pool-card-container">
             <Grid container spacing={2} className="data-grid" alignContent="center">
-              { stakeInfos }
+              {stakeInfos}
             </Grid>
             <Grid container spacing={2} className="data-grid" alignContent="center">
               <Grid item className="pool-button-container">
