@@ -240,9 +240,9 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
 
               }
             </Grid>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            {/* <div style={{ display: "flex", justifyContent: "center" }}>
               <RowRadioButtonsGroup />
-            </div>
+            </div> */}
             <Grid container spacing={2} className="data-grid" style={{ padding: '10px' }} alignContent="center">
               <Grid item className="stake-button">
                 <div className="stake-button-container">

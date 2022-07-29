@@ -34,6 +34,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   // const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
+    console.log("eagle: ", publicKey);
     let stakedInfo = await getStakedInfo(publicKey?.toBase58());
     let arr = [];
     for (let i = 0; i < stakedInfo.length; i++) {

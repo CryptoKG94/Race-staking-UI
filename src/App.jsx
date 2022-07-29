@@ -12,6 +12,7 @@ import useSegmentAnalytics from "./hooks/useSegmentAnalytics";
 import { storeQueryParameters } from "./helpers/QueryParameterHelper";
 
 import { Stake } from "./views";
+import { TokenStake } from "./views";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
@@ -123,10 +124,18 @@ function App() {
             <WalletModalProvider>
               <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
                 <Messages />
-
                 <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
-
-                <Stake />
+                <Switch>
+                <Route path="/" exact>
+                    <Stake />
+                  </Route>
+                  <Route path="/stake" exact>
+                    <Stake />
+                  </Route>
+                  <Route path="/tokenstake" exact>
+                    <TokenStake />
+                  </Route>
+                </Switch>
               </div>
               <NotificationContainer />
             </WalletModalProvider>

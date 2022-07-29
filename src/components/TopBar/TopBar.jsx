@@ -101,21 +101,21 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
                   </Typography>
                 </Link>
               </div>
-              {/* <div className={classes.menuItem}>
+              {<div className={classes.menuItem}>
                 <Link
                   component={NavLink}
-                  id="stake-nav"
-                  to="/stake"
+                  id="tokenstake-nav"
+                  to="/tokenstake"
                   isActive={(match, location) => {
-                    return checkPage(match, location, "stake");
+                    return checkPage(match, location, "tokenstake");
                   }}
                   className={`button-dapp-menu ${isActive ? "active" : ""}`}
                 >
-                  <Typography variant="h5">
-                    Marketplace
+                  <Typography variant="h2">
+                    RACE Token Staking
                   </Typography>
                 </Link>
-              </div> */}
+              </div>}
             </div>
           </Box>
           {/* <ConnectMenu theme={theme} /> */}
