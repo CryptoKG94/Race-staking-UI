@@ -5,7 +5,7 @@ import {
     RS_STAKE_SEED,
     RS_VAULT_SEED,
     PROGRAM_ID,
-    SWRD_TOKEN_MINT
+    RACE_TOKEN_MINT
 } from "./constants"
 
 /** Get NFT Staking Account Keys  */
@@ -22,7 +22,7 @@ export const getRewardVaultKey = async () => {
     const [rewardVaultKey] = await asyncGetPda(
         [
             Buffer.from(RS_VAULT_SEED),
-            SWRD_TOKEN_MINT.toBuffer()
+            RACE_TOKEN_MINT.toBuffer()
         ],
         PROGRAM_ID
     );

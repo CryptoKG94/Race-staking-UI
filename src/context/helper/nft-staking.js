@@ -8,8 +8,10 @@ import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token
 import { isValidSolanaAddress } from "@nfteyez/sol-rayz";
 
 import { IDL } from '../anchor_idl/idl/staking_program';
+import RARITY from '../rarity.json';
+
 import {
-  SWRD_TOKEN_MINT,
+  RACE_TOKEN_MINT,
   CLASS_TYPES,
   PROGRAM_ID,
   SECONDS_PER_DAY,
@@ -30,6 +32,7 @@ import {
   getNFTTokenAccount,
   getAssociatedTokenAccount,
 } from '../utils';
+import { forEach } from 'lodash';
 
 export const initProject = async () => {
   // console.log("On init click");
@@ -39,7 +42,7 @@ export const initProject = async () => {
   const res = await program.methods.initializeStakingPool(CLASS_TYPES, LOCK_DAY).accounts({
     admin: provider.wallet.publicKey,
     poolAccount: await getPoolKey(),
-    rewardMint: SWRD_TOKEN_MINT,
+    rewardMint: RACE_TOKEN_MINT,
     rewardVault: await getRewardVaultKey(),
     tokenProgram: TOKEN_PROGRAM_ID,
     systemProgram: SystemProgram.programId,
@@ -48,7 +51,7 @@ export const initProject = async () => {
   // console.log("Your transaction signature : ", res);
 }
 
-export const stakeNft = async (selectedNftMint, poolID) => {
+export const stakeNft = async (selectedNftMint) => {
   // console.log("On stake NFT");
   const provider = await getProvider();
   const program = new anchor.Program(IDL, PROGRAM_ID, provider);
@@ -59,7 +62,7 @@ export const stakeNft = async (selectedNftMint, poolID) => {
 
     let uri = await getNftMetadataURI(nftMintPk);
     // let tokenId = await getNftTokenId(uri);
-    let nftClass = poolID;//getNftClass(poolID);
+    let nftClass = getRarity(nftMintPk.toBase58());
 
     if (nftClass < 0) return;
     // console.log("token URI : ", uri);
@@ -102,9 +105,9 @@ export const unstakeNft = async (selectedNftMint) => {
       userNftTokenAccount: await getTokenAccount(nftMintPk, provider.wallet.publicKey),
       stakedNftTokenAccount: await getStakedNFTKey(nftMintPk),
       nftStakeInfoAccount: await getStakeInfoKey(nftMintPk),
-      rewardToAccount: await getAssociatedTokenAccount(provider.wallet.publicKey, SWRD_TOKEN_MINT),
+      rewardToAccount: await getAssociatedTokenAccount(provider.wallet.publicKey, RACE_TOKEN_MINT),
       rewardVault: await getRewardVaultKey(),
-      rewardMint: SWRD_TOKEN_MINT,
+      rewardMint: RACE_TOKEN_MINT,
       rent: SYSVAR_RENT_PUBKEY,
       systemProgram: SystemProgram.programId,
       tokenProgram: TOKEN_PROGRAM_ID,
@@ -134,9 +137,9 @@ export const claimReward = async (params) => {
           owner: provider.wallet.publicKey,
           poolAccount: await getPoolKey(),
           nftStakeInfoAccount: await getStakeInfoKey(nftMintPk),
-          rewardMint: SWRD_TOKEN_MINT,
+          rewardMint: RACE_TOKEN_MINT,
           rewardVault: await getRewardVaultKey(),
-          rewardToAccount: await getAssociatedTokenAccount(provider.wallet.publicKey, SWRD_TOKEN_MINT),
+          rewardToAccount: await getAssociatedTokenAccount(provider.wallet.publicKey, RACE_TOKEN_MINT),
           rent: SYSVAR_RENT_PUBKEY,
           systemProgram: SystemProgram.programId,
           tokenProgram: TOKEN_PROGRAM_ID,
@@ -193,18 +196,20 @@ const getNftTokenId = async (tokenURI) => {
   return tokenURI?.properties?.edition;
 }
 
+const getRarity = (address) => {
+  let rarity = 0;
+  Object.keys(RARITY).forEach(key => {
+    for (let i = 0; i < RARITY[key].length; i++) {
+      // console.log('[kg] => origin, address: ', RARITY[key][i].toLowerCase(), address.toLowerCase());
+      if (RARITY[key][i].toLowerCase() === address.toLowerCase()) {
+        rarity = key.charAt(0);
+        return;
+      }
+    }
+  });
 
-const getNftClass = (tokenId) => {
-  if (tokenId > 0 && tokenId <= 9) return 0;
-  else if (tokenId > 9 && tokenId <= 150) return 1;
-  else if (tokenId > 150 && tokenId <= 400) return 2;
-  else if (tokenId > 400 && tokenId <= 700) return 3;
-  else if (tokenId > 700 && tokenId <= 1100) return 4;
-  else if (tokenId > 1100 && tokenId <= 1650) return 5;
-  else if (tokenId > 1650 && tokenId <= 2350) return 6;
-  else if (tokenId > 2350 && tokenId <= 3200) return 7;
-  else if (tokenId > 3200) return 8;
-  else return -1;
+  console.log('[kg] => address, rarity: ', address, rarity);
+  return rarity;
 }
 
 // export const showToast = (txt, ty) => {

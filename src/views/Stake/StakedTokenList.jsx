@@ -41,7 +41,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       let uri = await getNftMetadataURI(stakedInfo[i].account.nftAddr);
 
       let currentTimeStamp = new Date().getTime() / 1000;
-      let reward = CLASS_TYPES[stakedInfo[i].account.classId] * (currentTimeStamp - stakedInfo[i].account.lastUpdateTime) / SECONDS_PER_DAY;
+      let reward = CLASS_TYPES[stakedInfo[i].account.classId] * (currentTimeStamp - stakedInfo[i].account.lastUpdateTime) / (SECONDS_PER_DAY * 365);
       // console.log("#############################", reward);
       if (reward < 0) reward = 0;
 

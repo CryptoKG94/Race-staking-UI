@@ -144,7 +144,7 @@ function TokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
       // console.log('onStake', poolID.current);
 
       try {
-        let res = await stakeNft(tokenList, Number(poolID.current));
+        let res = await stakeNft(tokenList);
         if (res.result == "success") {
           NotificationManager.success('Transaction succeed');
           updateRefreshFlag();
