@@ -16,6 +16,7 @@ import axios from "axios";
 import { useTheme } from "@material-ui/core/styles";
 import "./tokenstake.scss";
 import { NotificationManager } from "react-notifications";
+import { getStakedList } from "src/context/helper/token-staking";
 
 function OrderListByReward({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const theme = useTheme();
@@ -42,25 +43,26 @@ function OrderListByReward({ setLoadingStatus, refreshFlag, updateRefreshFlag })
     fetchAll();
   }, [refreshFlag, wallet.connected])
 
-  function GetSortOrderJSON(prop) {    
-    return function(a, b) {    
-        if (parseInt(a[prop]) < parseInt(b[prop])) {    
-            return 1;    
-        } else if (parseInt(a[prop]) > parseInt(b[prop])) {    
-            return -1;    
-        }    
-        return 0;    
-    }    
-  }   
+  function GetSortOrderJSON(prop) {
+    return function (a, b) {
+      if (parseInt(a[prop]) < parseInt(b[prop])) {
+        return 1;
+      } else if (parseInt(a[prop]) > parseInt(b[prop])) {
+        return -1;
+      }
+      return 0;
+    }
+  }
 
   const fetchStakedInfo = async () => {
-    let data = [{address: 'abcde', amount: '9'}, {address: 'abcde', amount: '10'}, {address: 'abcde', amount: '21'}]//= await getNftTokenData();
-    if (data) {
+    let data = [{ address: 'abcde', amount: '9' }, { address: 'abcde', amount: '10' }, { address: 'abcde', amount: '21' }]//= await getNftTokenData();
+    let stakedInfo = await getStakedList();
+    if (stakedInfo && stakedInfo.length > 0) {
 
       let collection = [];
-      for (let i = 0; i < data.length; i++) {
-        let item = data[i];
-        collection.push({ address: item.address, amount: item.amount });
+      for (let i = 0; i < stakedInfo.length; i++) {
+        let item = stakedInfo[i];
+        collection.push({ address: item.account.owner.toBase58(), amount: Number(item.account.stakeAmount) / Math.pow(10, 9) });
       }
 
       collection.sort(GetSortOrderJSON("amount"));
@@ -68,9 +70,9 @@ function OrderListByReward({ setLoadingStatus, refreshFlag, updateRefreshFlag })
     }
   }
 
-  const listItems = tokenStakedInfoList?.map((myList)=>{   
-      return <li style={{marginBottom:'10px'}}>{`${myList.address}, ${myList.amount}`}</li>;
-  });   
+  const listItems = tokenStakedInfoList?.map((myList) => {
+    return <li style={{ marginBottom: '10px' }}>{`${myList.address}, ${myList.amount}`}</li>;
+  });
 
   return (
     <Container

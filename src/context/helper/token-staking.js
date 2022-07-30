@@ -48,6 +48,16 @@ export const getWalletBalance = async () => {
     return 0;
 }
 
+export const getStakedList = async () => {
+
+    let provider = await getProvider();
+    const program = new anchor.Program(IDL, RACE_STAKING_PROGRAM_ID, provider);
+
+    const res = await program.account.stakeInfo.all();
+    console.log("[kg] => Staked list : ", res);
+    return res;
+}
+
 export const initProject = async () => {
     // console.log("On init click");
     const provider = await getProvider();
@@ -74,8 +84,8 @@ export const stakeRace = async () => {
     let tokenAccount = await getTokenAccount(RACE_TOKEN_MINT, provider.wallet.publicKey);
     let _tokenAccount = await provider.connection.getTokenAccountBalance(tokenAccount);
 
-    let amount = _tokenAccount.value.uiAmount;
-    console.log('[kg] => token account, race amount : ', tokenAccount.toBase58(), _tokenAccount.value.uiAmount);
+    let amount = _tokenAccount.value.amount;
+    console.log('[kg] => token account, race amount : ', tokenAccount.toBase58(), _tokenAccount.value.amount);
     let res = "success";
     try {
         const tx = await program.methods.stake(new anchor.BN(amount)).accounts({
@@ -113,7 +123,7 @@ export const unstakeRace = async () => {
             raceMint: RACE_TOKEN_MINT,
             userRaceAta: await getAssociatedTokenAccount(provider.wallet.publicKey, RACE_TOKEN_MINT),
             racePool: await getRacePoolKey(),
-            stakeInfoAccount: await getStakedNFTKey(provider.wallet.publicKey),
+            stakeInfoAccount: await getRaceStakeInfoKey(provider.wallet.publicKey),
             rent: SYSVAR_RENT_PUBKEY,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
             systemProgram: SystemProgram.programId,
@@ -125,7 +135,7 @@ export const unstakeRace = async () => {
         console.log(err.message);
     }
 
-    return res;
+    return { result: res };
 }
 
 export const getStakedInfo = async (pubKey) => {
@@ -138,7 +148,7 @@ export const getStakedInfo = async (pubKey) => {
         [
             {
                 memcmp: {
-                    offset: 12,
+                    offset: 8,
                     bytes: pubKey
                 }
             }

@@ -16,6 +16,7 @@ import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
 import { NotificationManager } from "react-notifications";
+import { web3 } from "@project-serum/anchor";
 
 function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -36,6 +37,10 @@ function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag })
   const fetchStakedInfo = async () => {
     let stakedInfo = await getStakedInfo(publicKey?.toBase58());
 
+    if (stakedInfo && stakedInfo.length > 0) {
+      let stakedAmount = Number(stakedInfo[0].account.stakeAmount);
+      setStakeInfos(stakedAmount / Math.pow(10, 9));
+    }
     // setStakeInfos(stakedInfo);
   }
 
