@@ -330,6 +330,10 @@ export const IDL = {
             "type": "publicKey"
           },
           {
+            "name": "isInitialized",
+            "type": "u8"
+          },
+          {
             "name": "stakeAmount",
             "type": "u64"
           },
@@ -386,8 +390,5 @@ export const IDL = {
       "name": "LackLamports",
       "msg": "Insufficient Lamports"
     }
-  ],
-  "metadata": {
-    "address": "CW7ALT4EkoLq5iaAtV1nFtetLZctwWEMQpM1uzKEk8ST"
-  }
+  ]
 }

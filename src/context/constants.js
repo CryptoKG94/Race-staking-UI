@@ -71,5 +71,5 @@ export const INITIALIZER = new PublicKey(
 export const RACE_STAKING_PROGRAM_ID = new PublicKey(
     IS_MAINNET ?
         "6RhXNaW1oQYQmjTc1ypb4bEFe1QasPAgEfFNhQ3HnSqo" :
-        "FTiY8nuRJqxcMTVuPYzSFXMrn9wCKPu1dnqyDbUzNUpH"
+        "AzUUwhQYdscAAcuJ2182k99ZzUbpogr2QD5fusMbERhn"
 )
