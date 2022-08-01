@@ -1,92 +1,57 @@
 import { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button, Checkbox } from "@material-ui/core";
-
-import { unstake, emergencyWithdrawal } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
-import { prettyVestingPeriod2 } from "../../helpers";
-import { error, info } from "../../slices/MessagesSlice";
-
-import "./tokenstake.scss";
-
-import { useWallet } from "@solana/wallet-adapter-react";
 import { getStakedInfo, unstakeRace } from "src/context/helper/token-staking";
-import { getNftMetadataURI } from "src/context/utils";
-import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
-import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
+import { useWallet } from "@solana/wallet-adapter-react";
+import "./tokenstake.scss";
 import { NotificationManager } from "react-notifications";
-import { web3 } from "@project-serum/anchor";
 
 function StakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
-  const dispatch = useDispatch();
-
   const { connected, wallet, publicKey } = useWallet();
-
-  const [tokenChecked, setTokenChecked] = useState([]);
-  const tokenSelectedList = useRef([]);
   const [stakeInfos, setStakeInfos] = useState(0);
-  // const [remainTimes, setRemainTimes] = useState([]);
-  const [vault_items, setVault_items] = useState([]);
   const [flag, setFlag] = useState(true);
-
-  // const setLoading = props.setLoading;
-
-  const fetchStakedInfo = async () => {
-    let stakedInfo = await getStakedInfo(publicKey?.toBase58());
-
-    if (stakedInfo && stakedInfo.length > 0) {
-      let stakedAmount = Number(stakedInfo[0].account.stakeAmount);
-      setStakeInfos(stakedAmount / Math.pow(10, 9));
-    }
-    // setStakeInfos(stakedInfo);
-  }
 
   useEffect(() => {
     async function getStakeInfo() {
       if (flag && connected) {
         await fetchStakedInfo();
-        // setFlag(false);
       }
     }
-
     getStakeInfo();
   }, [connected, refreshFlag]);
 
-  const onUnStake = async action => {
+  const fetchStakedInfo = async () => {
+    let stakedInfo = await getStakedInfo(publicKey?.toBase58());
+
+    if (stakedInfo && stakedInfo.length > 0) {
+      console.log("eagle: ", Number(stakedInfo[0].account.stakeAmount));
+      let stakedAmount = Number(stakedInfo[0].account.stakeAmount);
+      setStakeInfos(stakedAmount / Math.pow(10, 9));
+    } else {
+      setStakeInfos(0);
+    }
+  }
+
+  const onUnStake = async () => {
+      setLoadingStatus(true);
 
     try {
-      setLoadingStatus(true);
       let res = await unstakeRace();
-      setLoadingStatus(false);
       if (res.result == "success") {
         NotificationManager.success('Unstaked Successfully');
+	      updateRefreshFlag();
       } else {
         NotificationManager.error('Unstaking Failed!');
       }
-      updateRefreshFlag();
     } catch (e) {
-      console.log("[] => unstaking error: ", e);
       NotificationManager.error(e.message);
-      setLoadingStatus(false);
     }
-
-    // setLoading(false);
-    // await dispatch(unstake({ tokenList, provider, address, networkID: chainID }));
+    
+    setLoadingStatus(false);
   };
-
-  const onEmergencyWithdrawal = async action => {
-    let tokenList = [];
-    let poolList = [];
-
-    tokenSelectedList.current.map((item, index) => {
-      if (item.selected) {
-        tokenList.push(item.id);
-      }
-    })
-  }
 
   return (
     <Container

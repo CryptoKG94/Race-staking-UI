@@ -1,52 +1,22 @@
 import { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useWeb3Context } from "../../hooks";
 import { Paper, Grid, Typography, Box, Zoom, Container, useMediaQuery, Button, Checkbox } from "@material-ui/core";
-import { FormControl, RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
-import { useSelector } from "react-redux";
-import { trim, formatCurrency } from "../../helpers";
-import { stake } from "../../slices/NFT";
 import CardHeader from "../../components/CardHeader/CardHeader";
-import { PublicKey } from '@solana/web3.js';
-
-import { getNftMetadataURI, getAllNftData } from "../../context/utils";
 import { stakeRace, getStakedInfo, getWalletBalance } from "../../context/helper/token-staking";
-import { NFT_CREATOR } from "../../context/constants";
-
 import { useWallet } from "@solana/wallet-adapter-react";
-import axios from "axios";
-
-import { useTheme } from "@material-ui/core/styles";
 import "./tokenstake.scss";
-
 import { NotificationManager } from "react-notifications";
 
-const collection_creator = NFT_CREATOR;
-
 function UnstakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
-  const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
-  const dispatch = useDispatch();
-  // const { connect, address, provider, chainID, connected, hasCachedProvider } = useWeb3Context();
-  const staked = useSelector(state => {
-    return state.app.Staked;
-  });
-
-  const poolID = useRef("0");
-  const tokenSelectedList = useRef([]);
-  const [fetchFlag, setFetchFlag] = useState(true);
   const wallet = useWallet();
-
   const [tokenBalance, setTokenBalance] = useState(0);
 
   useEffect(() => {
     async function fetchAll() {
       console.log("Fetching...............")
       if (wallet && wallet.publicKey) {
-        // console.log('fetchFlag:  TRUE')
         await fetchUnstakedInfo()
       }
     }
@@ -57,11 +27,6 @@ function UnstakedRewardToken({ setLoadingStatus, refreshFlag, updateRefreshFlag 
   const fetchUnstakedInfo = async () => {
     let wallet_balance = await getWalletBalance();
     setTokenBalance(wallet_balance);
-  }
-
-  const onTokenSeltected = (event, id) => {
-    tokenSelectedList.current[id].selected = !tokenSelectedList.current[id].selected;
-    // console.log('token selected', tokenSelectedList.current);
   }
 
   const onStake = async () => {

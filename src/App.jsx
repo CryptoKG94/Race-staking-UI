@@ -39,6 +39,7 @@ import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
 
 import "./style.scss";
+import { RefreshContextProvider } from './context/RefreshContext'
 
 
 // 😬 Sorry for all the console logging
@@ -117,28 +118,29 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-
+        <CssBaseline />        
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>
-              <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
-                <Messages />
-                <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
-                <Switch>
-                <Route path="/" exact>
-                    <Stake />
-                  </Route>
-                  <Route path="/stake" exact>
-                    <Stake />
-                  </Route>
-                  <Route path="/tokenstake" exact>
-                    <TokenStake />
-                  </Route>
-                </Switch>
-              </div>
-              <NotificationContainer />
-            </WalletModalProvider>
+              <WalletModalProvider>
+                <div className={`app ${isSmallerScreen && "tablet"} ${isSmallScreen && "mobile"} light`}>
+                  <Messages />
+                  <TopBar theme={theme} toggleTheme={toggleTheme} handleDrawerToggle={handleDrawerToggle} />
+                  <Switch>
+                  <RefreshContextProvider>
+                    <Route path="/" exact>
+                      <Stake />
+                    </Route>
+                    <Route path="/stake" exact>
+                      <Stake />
+                    </Route>
+                    <Route path="/tokenstake" exact>
+                      <TokenStake />
+                    </Route>
+                  </RefreshContextProvider>
+                  </Switch>
+                </div>
+                <NotificationContainer />
+              </WalletModalProvider>
           </WalletProvider>
         </ConnectionProvider>
       </ThemeProvider>

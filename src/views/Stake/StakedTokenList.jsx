@@ -16,6 +16,7 @@ import { getNftMetadataURI } from "src/context/utils";
 import { CLASS_TYPES, LOCK_DAY, SECONDS_PER_DAY } from "src/context/constants";
 import UnstakeTimer from "src/components/unstakeTimer/unstakeTimer"
 import { NotificationManager } from "react-notifications";
+import useRefresh from 'src/hooks/useRefresh'
 
 function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   const smallerScreen = useMediaQuery("(max-width: 650px)");
@@ -30,7 +31,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
   // const [remainTimes, setRemainTimes] = useState([]);
   const [vault_items, setVault_items] = useState([]);
   const [flag, setFlag] = useState(true);
-
+  const { fastRefresh } = useRefresh();
   // const setLoading = props.setLoading;
 
   const fetchStakedInfo = async () => {
@@ -155,7 +156,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
     const [checked, setChecked] = useState(false);
     useEffect(() => {
       setChecked(false);
-    }, [item]);
+    }, [item, fastRefresh]);
 
     const onSelect = (e) => {
       setChecked(checked => !checked);
@@ -182,8 +183,8 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
           <Grid container className="data-grid" alignContent="center">
             <img src={item?.uri} className="nft-list-item-image" width={"100%"} />
           </Grid>
-          <Grid container className="data-grid" alignContent="center">
-            <Grid item lg={6} md={6} sm={6} xs={6}>
+          {/* <Grid container className="data-grid" alignContent="center">
+             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
                 PoolId:
               </Typography>
@@ -193,7 +194,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
                 {item.classId + 1}
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container className="data-grid" alignContent="center">
             <Grid item lg={6} md={6} sm={6} xs={6}>
               <Typography variant="h6" className="nft-item-description-title" align={'left'}>
@@ -206,11 +207,11 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container className="data-grid" alignContent="center">
+          { /*<Grid container className="data-grid" alignContent="center">
             <Grid item lg={12} md={8} sm={8} xs={8}>
               <Typography variant="h6" className="nft-item-description-value" align={'center'}>
-                {/* { (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime) } */}
-                {/* {remainTimes[index]} */}
+                (item.stakeType == 0) ? "No lockup" : prettyVestingPeriod2(item.depositTime)
+                {remainTimes[index]}
                 <UnstakeTimer unstakeTime={unstakeTime} />
               </Typography>
             </Grid>
@@ -219,7 +220,7 @@ function StakedTokenList({ setLoadingStatus, refreshFlag, updateRefreshFlag }) {
                 (Remain Lock Time)
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */ }
         </div>
       </Grid>
     )
