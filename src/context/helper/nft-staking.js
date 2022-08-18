@@ -68,6 +68,7 @@ export const stakeNft = async (selectedNftMint) => {
     if (nftClass < 0) return;
     // console.log("token URI : ", uri);
     // console.log("token Class : ", nftClass);
+    console.log('[kg] => nftInfo address: ', (await getNFTInfoKey(nftMintPk)).toBase58());
 
     const ix = await program.methods.stakeNft(nftClass).accounts({
       owner: provider.wallet.publicKey,
